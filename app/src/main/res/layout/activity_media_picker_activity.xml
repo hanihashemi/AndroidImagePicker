@@ -25,6 +25,4 @@
             android:layout_height="wrap_content"
             android:text="Pick Image or Video" />
     </LinearLayout>
-
-    <include layout="@layout/ad_view" />
 </LinearLayout>
