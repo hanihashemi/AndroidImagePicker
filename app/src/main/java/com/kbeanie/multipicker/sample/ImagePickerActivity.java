@@ -1,19 +1,14 @@
 package com.kbeanie.multipicker.sample;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.karumi.dexter.Dexter;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.single.EmptyPermissionListener;
 import com.kbeanie.multipicker.api.CacheLocation;
 import com.kbeanie.multipicker.api.CameraImagePicker;
 import com.kbeanie.multipicker.api.ImagePicker;
@@ -92,18 +87,6 @@ public class ImagePickerActivity extends AbActivity implements ImagePickerCallba
     }
 
     public void takePicture() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-            Dexter.checkPermission(new EmptyPermissionListener() {
-                @Override
-                public void onPermissionGranted(PermissionGrantedResponse response) {
-                    super.onPermissionGranted(response);
-                    takePictureAfterGrantPermission();
-                }
-            }, Manifest.permission.CAMERA);
-        else takePictureAfterGrantPermission();
-    }
-
-    public void takePictureAfterGrantPermission() {
         cameraPicker = new CameraImagePicker(this);
         cameraPicker.setCacheLocation(CacheLocation.EXTERNAL_CACHE_DIR);
         cameraPicker.setImagePickerCallback(this);
