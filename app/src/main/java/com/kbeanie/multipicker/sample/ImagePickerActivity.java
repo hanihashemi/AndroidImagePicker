@@ -1,14 +1,19 @@
 package com.kbeanie.multipicker.sample;
 
+import android.Manifest;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.single.EmptyPermissionListener;
 import com.kbeanie.multipicker.api.CacheLocation;
 import com.kbeanie.multipicker.api.CameraImagePicker;
 import com.kbeanie.multipicker.api.ImagePicker;
@@ -31,10 +36,13 @@ public class ImagePickerActivity extends AbActivity implements ImagePickerCallba
     private Button btTakePicture;
 
     private String pickerPath;
+    private ImagePicker imagePicker;
+    private CameraImagePicker cameraPicker;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Dexter.initialize(this);
         setContentView(R.layout.activity_image_picker_activity);
 
         getSupportActionBar().setTitle("Image Picker");
@@ -64,8 +72,6 @@ public class ImagePickerActivity extends AbActivity implements ImagePickerCallba
         });
     }
 
-    private ImagePicker imagePicker;
-
     public void pickImageSingle() {
         imagePicker = new ImagePicker(this);
         imagePicker.setFolderName("Random");
@@ -85,11 +91,21 @@ public class ImagePickerActivity extends AbActivity implements ImagePickerCallba
         imagePicker.pickImage();
     }
 
-    private CameraImagePicker cameraPicker;
-
     public void takePicture() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+            Dexter.checkPermission(new EmptyPermissionListener() {
+                @Override
+                public void onPermissionGranted(PermissionGrantedResponse response) {
+                    super.onPermissionGranted(response);
+                    takePictureAfterGrantPermission();
+                }
+            }, Manifest.permission.CAMERA);
+        else takePictureAfterGrantPermission();
+    }
+
+    public void takePictureAfterGrantPermission() {
         cameraPicker = new CameraImagePicker(this);
-        cameraPicker.setCacheLocation(CacheLocation.INTERNAL_APP_DIR);
+        cameraPicker.setCacheLocation(CacheLocation.EXTERNAL_CACHE_DIR);
         cameraPicker.setImagePickerCallback(this);
         cameraPicker.shouldGenerateMetadata(true);
         cameraPicker.shouldGenerateThumbnails(true);
