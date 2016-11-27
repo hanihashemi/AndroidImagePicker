@@ -74,8 +74,6 @@ public class ImagePickerActivity extends AbActivity implements ImagePickerCallba
         imagePicker.shouldGenerateMetadata(true);
         imagePicker.shouldGenerateThumbnails(true);
         imagePicker.setImagePickerCallback(this);
-        Bundle bundle = new Bundle();
-        bundle.putInt("android.intent.extras.CAMERA_FACING", 1);
         imagePicker.setCacheLocation(PickerUtils.getSavedCacheLocation(this));
         imagePicker.pickImage();
     }
