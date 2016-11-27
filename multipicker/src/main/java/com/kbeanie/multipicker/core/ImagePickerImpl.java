@@ -1,17 +1,26 @@
 package com.kbeanie.multipicker.core;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.EmptyPermissionListener;
 import com.kbeanie.multipicker.api.CameraImagePicker;
 import com.kbeanie.multipicker.api.ImagePicker;
 import com.kbeanie.multipicker.api.Picker;
@@ -147,14 +156,29 @@ public abstract class ImagePickerImpl extends PickerManager {
             tempFilePath = buildFilePath("jpeg", Environment.DIRECTORY_PICTURES);
             uri = Uri.fromFile(new File(tempFilePath));
         }
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         if (extras != null) {
             intent.putExtras(extras);
         }
+
         Log.d(TAG, "Temp Path for Camera capture: " + tempFilePath);
-        pickInternal(intent, Picker.PICK_IMAGE_CAMERA);
+        checkCameraPermission(intent);
+
         return tempFilePath;
+    }
+
+    private void checkCameraPermission(final Intent intent) {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
+            pickInternal(intent, Picker.PICK_IMAGE_CAMERA);
+        else if (!Dexter.isRequestOngoing())
+            Dexter.checkPermission(new EmptyPermissionListener() {
+                @Override
+                public void onPermissionGranted(PermissionGrantedResponse response) {
+                    super.onPermissionGranted(response);
+                    pickInternal(intent, Picker.PICK_IMAGE_CAMERA);
+                }
+            }, Manifest.permission.CAMERA);
     }
 
     /**
