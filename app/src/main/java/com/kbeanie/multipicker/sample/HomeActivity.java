@@ -23,8 +23,6 @@ import com.kbeanie.multipicker.sample.adapters.DemosAdapter;
  */
 public class HomeActivity extends AbActivity implements AdapterView.OnItemClickListener {
 
-    private final static int EXTERNAL_STORAGE_PERMISSION_REQUEST = 100;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +31,6 @@ public class HomeActivity extends AbActivity implements AdapterView.OnItemClickL
         ListView lvDemoTypes = (ListView) findViewById(R.id.lvDemoTypes);
         lvDemoTypes.setAdapter(new DemosAdapter(this));
         lvDemoTypes.setOnItemClickListener(this);
-
-        requestExternalStoragePermission();
     }
 
     @Override
@@ -172,24 +168,5 @@ public class HomeActivity extends AbActivity implements AdapterView.OnItemClickL
         });
 
         builder.create().show();
-    }
-
-    private void requestExternalStoragePermission() {
-        if ((ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) || (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED)) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS},
-                    EXTERNAL_STORAGE_PERMISSION_REQUEST);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
     }
 }
