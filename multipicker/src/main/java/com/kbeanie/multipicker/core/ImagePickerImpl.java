@@ -16,11 +16,8 @@ import android.support.v4.content.FileProvider;
 import android.util.Log;
 
 import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.EmptyPermissionListener;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.listener.multi.EmptyMultiplePermissionsListener;
 import com.kbeanie.multipicker.api.CameraImagePicker;
 import com.kbeanie.multipicker.api.ImagePicker;
 import com.kbeanie.multipicker.api.Picker;
@@ -39,13 +36,12 @@ import java.util.List;
  */
 public abstract class ImagePickerImpl extends PickerManager {
     private final static String TAG = ImagePickerImpl.class.getSimpleName();
+    protected ImagePickerCallback callback;
     private String path;
     private boolean generateThumbnails = true;
     private boolean generateMetadata = true;
     private int maxWidth = -1;
     private int maxHeight = -1;
-
-    protected ImagePickerCallback callback;
 
     /**
      * @param activity   {@link Activity}
@@ -140,8 +136,22 @@ public abstract class ImagePickerImpl extends PickerManager {
         }
         // For reading from external storage (Content Providers)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        pickInternal(intent, Picker.PICK_IMAGE_DEVICE);
+        checkWriteExternalStoreagePermission(intent);
         return null;
+    }
+
+    private void checkWriteExternalStoreagePermission(final Intent intent) {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
+            pickInternal(intent, Picker.PICK_IMAGE_DEVICE);
+        else if (!Dexter.isRequestOngoing())
+            Dexter.checkPermissions(new EmptyMultiplePermissionsListener() {
+                @Override
+                public void onPermissionsChecked(MultiplePermissionsReport report) {
+                    super.onPermissionsChecked(report);
+                    if (report.areAllPermissionsGranted())
+                        pickInternal(intent, Picker.PICK_IMAGE_DEVICE);
+                }
+            }, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     protected String takePictureWithCamera() throws PickerException {
@@ -172,13 +182,14 @@ public abstract class ImagePickerImpl extends PickerManager {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
             pickInternal(intent, Picker.PICK_IMAGE_CAMERA);
         else if (!Dexter.isRequestOngoing())
-            Dexter.checkPermission(new EmptyPermissionListener() {
+            Dexter.checkPermissions(new EmptyMultiplePermissionsListener() {
                 @Override
-                public void onPermissionGranted(PermissionGrantedResponse response) {
-                    super.onPermissionGranted(response);
-                    pickInternal(intent, Picker.PICK_IMAGE_CAMERA);
+                public void onPermissionsChecked(MultiplePermissionsReport report) {
+                    super.onPermissionsChecked(report);
+                    if (report.areAllPermissionsGranted())
+                        pickInternal(intent, Picker.PICK_IMAGE_CAMERA);
                 }
-            }, Manifest.permission.CAMERA);
+            }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     /**
