@@ -18,7 +18,6 @@ import com.kbeanie.multipicker.api.Picker;
 import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
 import com.kbeanie.multipicker.api.entity.ChosenImage;
 import com.kbeanie.multipicker.sample.adapters.MediaResultsAdapter;
-import com.kbeanie.multipicker.sample.utils.PickerUtils;
 
 import java.util.List;
 
@@ -77,7 +76,7 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
         imagePicker.shouldGenerateMetadata(true);
         imagePicker.shouldGenerateThumbnails(true);
         imagePicker.setImagePickerCallback(this);
-        imagePicker.setCacheLocation(PickerUtils.getSavedCacheLocation(this));
+        imagePicker.setCacheLocation(CacheLocation.EXTERNAL_STORAGE_APP_DIR);
         imagePicker.pickImage();
     }
 
