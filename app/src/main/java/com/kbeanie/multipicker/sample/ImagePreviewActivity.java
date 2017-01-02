@@ -3,6 +3,7 @@ package com.kbeanie.multipicker.sample;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -14,7 +15,7 @@ import java.io.File;
 /**
  * Created by kbibek on 3/3/16.
  */
-public class ImagePreviewActivity extends AbActivity {
+public class ImagePreviewActivity extends AppCompatActivity {
     private ImageView ivImageGlide;
     private String uri;
     private String mimeType;

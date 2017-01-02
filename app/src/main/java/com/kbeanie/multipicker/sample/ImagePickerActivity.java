@@ -1,8 +1,10 @@
 package com.kbeanie.multipicker.sample;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -23,7 +25,7 @@ import java.util.List;
 /**
  * Created by kbibek on 2/19/16.
  */
-public class ImagePickerActivity extends AbActivity implements ImagePickerCallback {
+public class ImagePickerActivity extends AppCompatActivity implements ImagePickerCallback {
     private ListView lvResults;
 
     private Button btPickImageSingle;
@@ -98,7 +100,7 @@ public class ImagePickerActivity extends AbActivity implements ImagePickerCallba
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == AbActivity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == Picker.PICK_IMAGE_DEVICE) {
                 if (imagePicker == null) {
                     imagePicker = new ImagePicker(this);
