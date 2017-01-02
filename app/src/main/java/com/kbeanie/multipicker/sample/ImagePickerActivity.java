@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,7 +22,7 @@ import java.util.List;
 /**
  * Created by kbibek on 2/19/16.
  */
-public class ImagePickerActivity extends AppCompatActivity implements ImagePickerCallback {
+public class ImagePickerActivity extends AppCompatActivity implements ImagePickerCallback, View.OnClickListener {
     private ListView lvResults;
 
     private String pickerPath;
@@ -40,27 +39,24 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
         getSupportActionBar().setSubtitle("Activity example");
 
         lvResults = (ListView) findViewById(R.id.lvResults);
-        Button btPickImageSingle = (Button) findViewById(R.id.btGallerySingleImage);
-        btPickImageSingle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        findViewById(R.id.btGallerySingleImage).setOnClickListener(this);
+        findViewById(R.id.btGalleryMultipleImages).setOnClickListener(this);
+        findViewById(R.id.btCameraImage).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btGallerySingleImage:
                 pickImageSingle();
-            }
-        });
-        Button btPickImageMultiple = (Button) findViewById(R.id.btGalleryMultipleImages);
-        btPickImageMultiple.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            case R.id.btGalleryMultipleImages:
                 pickImageMultiple();
-            }
-        });
-        Button btTakePicture = (Button) findViewById(R.id.btCameraImage);
-        btTakePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            case R.id.btCameraImage:
                 takePicture();
-            }
-        });
+                break;
+        }
     }
 
     public void pickImageSingle() {
