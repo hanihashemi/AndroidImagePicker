@@ -19,7 +19,6 @@ import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.EmptyMultiplePermissionsListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.kbeanie.multipicker.api.CameraImagePicker;
 import com.kbeanie.multipicker.api.ImagePicker;
@@ -125,17 +124,23 @@ public abstract class ImagePickerImpl extends PickerManager {
     }
 
     private void checkWriteExternalStoragePermission(final Intent intent) {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
             pickInternal(intent, Picker.PICK_IMAGE_DEVICE);
-        else if (!Dexter.isRequestOngoing())
-            Dexter.checkPermissions(new EmptyMultiplePermissionsListener() {
-                @Override
-                public void onPermissionsChecked(MultiplePermissionsReport report) {
-                    super.onPermissionsChecked(report);
-                    if (report.areAllPermissionsGranted())
-                        pickInternal(intent, Picker.PICK_IMAGE_DEVICE);
-                }
-            }, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        else Dexter.withActivity(activity)
+                .withPermissions(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ).withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if (report.areAllPermissionsGranted())
+                            pickInternal(intent, Picker.PICK_IMAGE_DEVICE);
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
     }
 
     private String takePictureWithCamera() throws PickerException {
@@ -163,17 +168,24 @@ public abstract class ImagePickerImpl extends PickerManager {
     }
 
     private void checkCameraPermission(final Intent intent) {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
             pickInternal(intent, Picker.PICK_IMAGE_CAMERA);
-        else if (!Dexter.isRequestOngoing())
-            Dexter.checkPermissions(new EmptyMultiplePermissionsListener() {
-                @Override
-                public void onPermissionsChecked(MultiplePermissionsReport report) {
-                    super.onPermissionsChecked(report);
-                    if (report.areAllPermissionsGranted())
-                        pickInternal(intent, Picker.PICK_IMAGE_CAMERA);
-                }
-            }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        else Dexter.withActivity(activity)
+                .withPermissions(
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ).withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if (report.areAllPermissionsGranted())
+                            pickInternal(intent, Picker.PICK_IMAGE_CAMERA);
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
     }
 
     /**

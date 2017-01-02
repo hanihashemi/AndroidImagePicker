@@ -32,7 +32,6 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Dexter.initialize(this);
         setContentView(R.layout.activity_image_picker_activity);
 
         getSupportActionBar().setTitle("Image Picker");
