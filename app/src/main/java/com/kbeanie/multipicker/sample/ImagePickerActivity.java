@@ -25,10 +25,10 @@ import java.util.List;
 public class ImagePickerActivity extends AppCompatActivity implements ImagePickerCallback, View.OnClickListener {
     private ListView lvResults;
 
-    private String pickerPath;
     private ImagePicker imagePicker;
     private CameraImagePicker cameraPicker;
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +84,7 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
         cameraPicker.setImagePickerCallback(this);
         cameraPicker.shouldGenerateMetadata(true);
         cameraPicker.shouldGenerateThumbnails(true);
-        pickerPath = cameraPicker.pickImage();
+        cameraPicker.pickImage();
     }
 
     @Override
@@ -92,17 +92,8 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == Picker.PICK_IMAGE_DEVICE) {
-                if (imagePicker == null) {
-                    imagePicker = new ImagePicker(this);
-                    imagePicker.setImagePickerCallback(this);
-                }
                 imagePicker.submit(data);
             } else if (requestCode == Picker.PICK_IMAGE_CAMERA) {
-                if (cameraPicker == null) {
-                    cameraPicker = new CameraImagePicker(this);
-                    cameraPicker.setImagePickerCallback(this);
-                    cameraPicker.reinitialize(pickerPath);
-                }
                 cameraPicker.submit(data);
             }
         }
@@ -117,25 +108,5 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
     @Override
     public void onError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        // You have to save path in case your activity is killed.
-        // In such a scenario, you will need to re-initialize the CameraImagePicker
-        outState.putString("picker_path", pickerPath);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        // After Activity recreate, you need to re-intialize these
-        // two values to be able to re-intialize CameraImagePicker
-        if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey("picker_path")) {
-                pickerPath = savedInstanceState.getString("picker_path");
-            }
-        }
-        super.onRestoreInstanceState(savedInstanceState);
     }
 }
