@@ -70,7 +70,6 @@ public abstract class ImagePickerImpl extends PickerManager {
     /**
      * Enable generation of thumbnails. Default value is {@link Boolean#FALSE}
      *
-     * @param generateThumbnails
      */
     public void shouldGenerateThumbnails(boolean generateThumbnails) {
         this.generateThumbnails = generateThumbnails;
@@ -79,7 +78,6 @@ public abstract class ImagePickerImpl extends PickerManager {
     /**
      * Enable generation of metadata for the image. Default value is {@link Boolean#FALSE}
      *
-     * @param generateMetadata
      */
     public void shouldGenerateMetadata(boolean generateMetadata) {
         this.generateMetadata = generateMetadata;
@@ -90,9 +88,8 @@ public abstract class ImagePickerImpl extends PickerManager {
      * <p/>
      * After creating the picker object, call this method with the path that you got after calling {@link PickerManager#pick()}
      *
-     * @param path
      */
-    public void reinitialize(String path) {
+    protected void reinitialize(String path) {
         this.path = path;
     }
 
@@ -104,8 +101,6 @@ public abstract class ImagePickerImpl extends PickerManager {
      * Use this method to set the max size of the generated image. The final bitmap will be downscaled based on
      * these values.
      *
-     * @param width
-     * @param height
      */
     public void ensureMaxSize(int width, int height) {
         if (width > 0 && height > 0) {
@@ -128,7 +123,7 @@ public abstract class ImagePickerImpl extends PickerManager {
         return null;
     }
 
-    protected String pickLocalImage() {
+    private String pickLocalImage() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         if (extras != null) {
@@ -154,8 +149,8 @@ public abstract class ImagePickerImpl extends PickerManager {
             }, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
-    protected String takePictureWithCamera() throws PickerException {
-        Uri uri = null;
+    private String takePictureWithCamera() throws PickerException {
+        Uri uri;
         String tempFilePath;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             tempFilePath = getNewFileLocation("jpeg", Environment.DIRECTORY_PICTURES);
@@ -200,7 +195,6 @@ public abstract class ImagePickerImpl extends PickerManager {
      * OR
      * {@link android.app.Fragment#onActivityResult(int, int, Intent)}
      *
-     * @param data
      */
     @Override
     public void submit(Intent data) {
