@@ -17,7 +17,6 @@ import com.kbeanie.multipicker.api.ImagePicker;
 import com.kbeanie.multipicker.api.Picker;
 import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
 import com.kbeanie.multipicker.api.entity.ChosenImage;
-import com.kbeanie.multipicker.sample.adapters.MediaResultsAdapter;
 
 import java.util.List;
 

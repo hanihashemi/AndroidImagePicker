@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.sample.adapters;
+package com.kbeanie.multipicker.sample;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +14,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.kbeanie.multipicker.api.entity.ChosenFile;
 import com.kbeanie.multipicker.api.entity.ChosenImage;
-import com.kbeanie.multipicker.sample.ImagePreviewActivity;
-import com.kbeanie.multipicker.sample.R;
 
 import java.io.File;
 import java.util.List;
