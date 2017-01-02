@@ -1,19 +1,4 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
-    }
-}
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
-
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
-
 
 android {
     signingConfigs {
@@ -40,27 +25,6 @@ android {
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    dexOptions {
-        incremental true
-    }
-
-    lintOptions {
-        checkReleaseBuilds false
-        abortOnError false
-    }
-}
-
-gradle.taskGraph.whenReady { taskGraph ->
-    if (taskGraph.hasTask(':app:assembleRelease')) {
-        /**
-         * Configure Release key
-         */
-        def props = new Properties()
-        props.load(new FileInputStream(rootProject.file("extras/secret.properties")))
-        android.signingConfigs.release.keyAlias props.alias
-        android.signingConfigs.release.storePassword props.getProperty('keyStorePassword')
-        android.signingConfigs.release.keyPassword props.getProperty('keyAliasPassword')
     }
 }
 
