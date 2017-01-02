@@ -37,11 +37,11 @@ import java.util.List;
 public abstract class ImagePickerImpl extends PickerManager {
     private final static String TAG = ImagePickerImpl.class.getSimpleName();
     protected ImagePickerCallback callback;
-    private String path;
     private boolean generateThumbnails = true;
     private boolean generateMetadata = true;
     private int maxWidth = -1;
     private int maxHeight = -1;
+    private String cameraFilePath;
 
     /**
      * @param activity   {@link Activity}
@@ -83,16 +83,6 @@ public abstract class ImagePickerImpl extends PickerManager {
         this.generateMetadata = generateMetadata;
     }
 
-    /**
-     * This should be used to re-initialize the picker object, in case your activity/fragment is destroyed.
-     * <p/>
-     * After creating the picker object, call this method with the path that you got after calling {@link PickerManager#pick()}
-     *
-     */
-    protected void reinitialize(String path) {
-        this.path = path;
-    }
-
     public void setImagePickerCallback(ImagePickerCallback callback) {
         this.callback = callback;
     }
@@ -117,8 +107,7 @@ public abstract class ImagePickerImpl extends PickerManager {
         if (pickerType == Picker.PICK_IMAGE_DEVICE) {
             return pickLocalImage();
         } else if (pickerType == Picker.PICK_IMAGE_CAMERA) {
-            path = takePictureWithCamera();
-            return path;
+            return takePictureWithCamera();
         }
         return null;
     }
@@ -161,15 +150,15 @@ public abstract class ImagePickerImpl extends PickerManager {
             tempFilePath = buildFilePath("jpeg", Environment.DIRECTORY_PICTURES);
             uri = Uri.fromFile(new File(tempFilePath));
         }
+        cameraFilePath = tempFilePath;
+
         final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         if (extras != null) {
             intent.putExtras(extras);
         }
 
-        Log.d(TAG, "Temp Path for Camera capture: " + tempFilePath);
         checkCameraPermission(intent);
-
         return tempFilePath;
     }
 
@@ -199,14 +188,13 @@ public abstract class ImagePickerImpl extends PickerManager {
     @Override
     public void submit(Intent data) {
         if (pickerType == Picker.PICK_IMAGE_CAMERA) {
-            handleCameraData(data);
+            handleCameraData(cameraFilePath);
         } else if (pickerType == Picker.PICK_IMAGE_DEVICE) {
             handleGalleryData(data);
         }
     }
 
-    private void handleCameraData(Intent data) {
-        Log.d(TAG, "handleCameraData: " + path);
+    private void handleCameraData(String path) {
         if (path == null || path.isEmpty()) {
             throw new RuntimeException("Camera Path cannot be null. Re-initialize with correct path value.");
         } else {

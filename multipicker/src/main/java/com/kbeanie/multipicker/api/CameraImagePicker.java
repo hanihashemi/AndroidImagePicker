@@ -35,36 +35,6 @@ public final class CameraImagePicker extends ImagePickerImpl {
     }
 
     /**
-     * Re-initialize the {@link CameraImagePicker} object if your activity is destroyed
-     * @param activity
-     * @param path
-     */
-    public CameraImagePicker(Activity activity, String path) {
-        super(activity, Picker.PICK_IMAGE_CAMERA);
-        reinitialize(path);
-    }
-
-    /**
-     * Re-initialize the {@link CameraImagePicker} object if your activity is destroyed
-     * @param fragment
-     * @param path
-     */
-    public CameraImagePicker(Fragment fragment, String path) {
-        super(fragment, Picker.PICK_IMAGE_CAMERA);
-        reinitialize(path);
-    }
-
-    /**
-     * Re-initialize the {@link CameraImagePicker} object if your activity is destroyed
-     * @param appFragment
-     * @param path
-     */
-    public CameraImagePicker(android.app.Fragment appFragment, String path) {
-        super(appFragment, Picker.PICK_IMAGE_CAMERA);
-        reinitialize(path);
-    }
-
-    /**
      * Triggers image capture using the device's camera
      * @return
      */
