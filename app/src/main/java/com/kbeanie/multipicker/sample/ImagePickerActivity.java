@@ -26,10 +26,6 @@ import java.util.List;
 public class ImagePickerActivity extends AppCompatActivity implements ImagePickerCallback {
     private ListView lvResults;
 
-    private Button btPickImageSingle;
-    private Button btPickImageMultiple;
-    private Button btTakePicture;
-
     private String pickerPath;
     private ImagePicker imagePicker;
     private CameraImagePicker cameraPicker;
@@ -44,21 +40,21 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
         getSupportActionBar().setSubtitle("Activity example");
 
         lvResults = (ListView) findViewById(R.id.lvResults);
-        btPickImageSingle = (Button) findViewById(R.id.btGallerySingleImage);
+        Button btPickImageSingle = (Button) findViewById(R.id.btGallerySingleImage);
         btPickImageSingle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pickImageSingle();
             }
         });
-        btPickImageMultiple = (Button) findViewById(R.id.btGalleryMultipleImages);
+        Button btPickImageMultiple = (Button) findViewById(R.id.btGalleryMultipleImages);
         btPickImageMultiple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pickImageMultiple();
             }
         });
-        btTakePicture = (Button) findViewById(R.id.btCameraImage);
+        Button btTakePicture = (Button) findViewById(R.id.btCameraImage);
         btTakePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
