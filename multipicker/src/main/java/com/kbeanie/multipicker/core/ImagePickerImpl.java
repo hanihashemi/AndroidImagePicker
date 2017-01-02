@@ -136,11 +136,11 @@ public abstract class ImagePickerImpl extends PickerManager {
         }
         // For reading from external storage (Content Providers)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        checkWriteExternalStoreagePermission(intent);
+        checkWriteExternalStoragePermission(intent);
         return null;
     }
 
-    private void checkWriteExternalStoreagePermission(final Intent intent) {
+    private void checkWriteExternalStoragePermission(final Intent intent) {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
             pickInternal(intent, Picker.PICK_IMAGE_DEVICE);
         else if (!Dexter.isRequestOngoing())
