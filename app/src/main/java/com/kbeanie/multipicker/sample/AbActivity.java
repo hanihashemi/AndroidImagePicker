@@ -17,10 +17,6 @@ public class AbActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!(this instanceof HomeActivity)) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
         preferences = new AppPreferences(this);
     }
 
