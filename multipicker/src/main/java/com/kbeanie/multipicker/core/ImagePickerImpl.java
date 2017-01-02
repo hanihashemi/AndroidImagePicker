@@ -17,7 +17,10 @@ import android.util.Log;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.EmptyMultiplePermissionsListener;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.kbeanie.multipicker.api.CameraImagePicker;
 import com.kbeanie.multipicker.api.ImagePicker;
 import com.kbeanie.multipicker.api.Picker;
@@ -69,7 +72,6 @@ public abstract class ImagePickerImpl extends PickerManager {
 
     /**
      * Enable generation of thumbnails. Default value is {@link Boolean#FALSE}
-     *
      */
     public void shouldGenerateThumbnails(boolean generateThumbnails) {
         this.generateThumbnails = generateThumbnails;
@@ -77,7 +79,6 @@ public abstract class ImagePickerImpl extends PickerManager {
 
     /**
      * Enable generation of metadata for the image. Default value is {@link Boolean#FALSE}
-     *
      */
     public void shouldGenerateMetadata(boolean generateMetadata) {
         this.generateMetadata = generateMetadata;
@@ -90,7 +91,6 @@ public abstract class ImagePickerImpl extends PickerManager {
     /**
      * Use this method to set the max size of the generated image. The final bitmap will be downscaled based on
      * these values.
-     *
      */
     public void ensureMaxSize(int width, int height) {
         if (width > 0 && height > 0) {
@@ -183,7 +183,6 @@ public abstract class ImagePickerImpl extends PickerManager {
      * {@link Fragment#onActivityResult(int, int, Intent)}
      * OR
      * {@link android.app.Fragment#onActivityResult(int, int, Intent)}
-     *
      */
     @Override
     public void submit(Intent data) {
