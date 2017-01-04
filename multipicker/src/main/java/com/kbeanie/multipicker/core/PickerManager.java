@@ -29,12 +29,10 @@ import storage.StoragePreferences;
  */
 public abstract class PickerManager {
     private final static String TAG = PickerManager.class.getSimpleName();
+    protected final int pickerType;
     protected Activity activity;
     protected Fragment fragment;
     protected android.app.Fragment appFragment;
-
-    protected final int pickerType;
-
     protected int requestId;
 
     protected int cacheLocation = CacheLocation.EXTERNAL_STORAGE_PUBLIC_DIR;
@@ -56,6 +54,28 @@ public abstract class PickerManager {
     public PickerManager(android.app.Fragment appFragment, int pickerType) {
         this.appFragment = appFragment;
         this.pickerType = pickerType;
+    }
+
+    public static long querySizeOfFile(Uri uri, Context context) {
+        if (uri.toString().startsWith("file")) {
+            File file = new File(uri.getPath());
+            return file.length();
+        } else if (uri.toString().startsWith("content")) {
+            Cursor cursor = null;
+            try {
+                cursor = context.getContentResolver().query(uri, null, null, null, null);
+                if (cursor != null && cursor.moveToFirst()) {
+                    return cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE));
+                } else {
+                    return 0;
+                }
+            } catch (Exception e) {
+                return 0;
+            } finally {
+                cursor.close();
+            }
+        }
+        return 0;
     }
 
     /**
@@ -99,7 +119,7 @@ public abstract class PickerManager {
      *
      * @return
      */
-    protected abstract String pick() throws PickerException;
+    protected abstract void pick() throws PickerException;
 
     /**
      * This method should be called after {@link Activity#onActivityResult(int, int, Intent)} is  called.
@@ -185,29 +205,6 @@ public abstract class PickerManager {
         }
     }
 
-    public static long querySizeOfFile(Uri uri, Context context) {
-        if (uri.toString().startsWith("file")) {
-            File file = new File(uri.getPath());
-            return file.length();
-        } else if (uri.toString().startsWith("content")) {
-            Cursor cursor = null;
-            try {
-                cursor = context.getContentResolver().query(uri, null, null, null, null);
-                if (cursor != null && cursor.moveToFirst()) {
-                    return cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE));
-                } else {
-                    return 0;
-                }
-            } catch (Exception e) {
-                return 0;
-            } finally {
-                cursor.close();
-            }
-        }
-        return 0;
-    }
-
-
     protected String getNewFileLocation(String extension, String type) throws PickerException {
         File file;
         String filePathName = "";
@@ -223,7 +220,7 @@ public abstract class PickerManager {
         return file.getAbsolutePath();
     }
 
-    protected String getFileProviderAuthority(){
-        return getContext().getPackageName()+".multipicker.fileprovider";
+    protected String getFileProviderAuthority() {
+        return getContext().getPackageName() + ".multipicker.fileprovider";
     }
 }

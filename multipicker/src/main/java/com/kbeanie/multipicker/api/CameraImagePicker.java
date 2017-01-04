@@ -38,17 +38,15 @@ public final class CameraImagePicker extends ImagePickerImpl {
      * Triggers image capture using the device's camera
      * @return
      */
-    public String pickImage() {
-        String path = null;
+    public void pickImage() {
         try {
-            path = pick();
+            pick();
         } catch (PickerException e) {
             e.printStackTrace();
             if (callback != null) {
                 callback.onError(e.getMessage());
             }
         }
-        return path;
     }
 
     @Override

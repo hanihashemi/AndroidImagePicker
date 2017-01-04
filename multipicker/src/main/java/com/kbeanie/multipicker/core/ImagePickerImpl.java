@@ -99,16 +99,15 @@ public abstract class ImagePickerImpl extends PickerManager {
     }
 
     @Override
-    protected String pick() throws PickerException {
+    protected void pick() throws PickerException {
         if (callback == null) {
             throw new PickerException("ImagePickerCallback is null!!! Please set one.");
         }
         if (pickerType == Picker.PICK_IMAGE_DEVICE) {
-            return pickLocalImage();
+            checkWriteExternalStoragePermission();
         } else if (pickerType == Picker.PICK_IMAGE_CAMERA) {
-            return takePictureWithCamera();
+            checkCameraPermission();
         }
-        return null;
     }
 
     private String pickLocalImage() {
@@ -119,13 +118,13 @@ public abstract class ImagePickerImpl extends PickerManager {
         }
         // For reading from external storage (Content Providers)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        checkWriteExternalStoragePermission(intent);
+        pickInternal(intent, Picker.PICK_IMAGE_DEVICE);
         return null;
     }
 
-    private void checkWriteExternalStoragePermission(final Intent intent) {
+    private void checkWriteExternalStoragePermission() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-            pickInternal(intent, Picker.PICK_IMAGE_DEVICE);
+            pickLocalImage();
         else Dexter.withActivity(activity)
                 .withPermissions(
                         Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -133,7 +132,7 @@ public abstract class ImagePickerImpl extends PickerManager {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
                         if (report.areAllPermissionsGranted())
-                            pickInternal(intent, Picker.PICK_IMAGE_DEVICE);
+                            pickLocalImage();
                     }
 
                     @Override
@@ -163,22 +162,37 @@ public abstract class ImagePickerImpl extends PickerManager {
             intent.putExtras(extras);
         }
 
-        checkCameraPermission(intent);
+        pickInternal(intent, Picker.PICK_IMAGE_CAMERA);
         return tempFilePath;
     }
 
-    private void checkCameraPermission(final Intent intent) {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-            pickInternal(intent, Picker.PICK_IMAGE_CAMERA);
-        else Dexter.withActivity(activity)
+    private void checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            try {
+                takePictureWithCamera();
+            } catch (PickerException e) {
+                e.printStackTrace();
+                if (callback != null) {
+                    callback.onError(e.getMessage());
+                }
+            }
+        } else Dexter.withActivity(activity)
                 .withPermissions(
                         Manifest.permission.CAMERA,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ).withListener(new MultiplePermissionsListener() {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
-                        if (report.areAllPermissionsGranted())
-                            pickInternal(intent, Picker.PICK_IMAGE_CAMERA);
+                        if (report.areAllPermissionsGranted()) {
+                            try {
+                                takePictureWithCamera();
+                            } catch (PickerException e) {
+                                e.printStackTrace();
+                                if (callback != null) {
+                                    callback.onError(e.getMessage());
+                                }
+                            }
+                        }
                     }
 
                     @Override
