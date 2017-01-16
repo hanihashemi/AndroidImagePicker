@@ -27,6 +27,7 @@ public class MediaResultsAdapter extends BaseAdapter {
     private final static int TYPE_IMAGE = 0;
 
     private final static String FORMAT_IMAGE_VIDEO_DIMENSIONS = "%sw x %sh";
+    private final static String FORMAT_IMAGE_LOCATION = "%s x %s";
     private final static String FORMAT_ORIENTATION = "Ortn: %s";
 
     private final Context context;
@@ -98,6 +99,13 @@ public class MediaResultsAdapter extends BaseAdapter {
 
         TextView tvOrientation = (TextView) view.findViewById(R.id.tvOrientation);
         tvOrientation.setText(String.format(FORMAT_ORIENTATION, image.getOrientationName()));
+
+        TextView tvLocation = (TextView) view.findViewById(R.id.tvLoction);
+        if (image.hasLocation()) {
+            tvLocation.setVisibility(View.VISIBLE);
+            tvLocation.setText(String.format(FORMAT_IMAGE_LOCATION, image.getLat(), image.getLng()));
+        } else
+            tvLocation.setVisibility(View.GONE);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
