@@ -259,21 +259,6 @@ public abstract class ImagePickerImpl extends PickerManager {
         }
     }
 
-    private void onError(final String errorMessage) {
-        try {
-            if (callback != null) {
-                ((Activity) getContext()).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        callback.onError(errorMessage);
-                    }
-                });
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void processImages(List<String> uris) {
         ImageProcessorThread thread = new ImageProcessorThread(getContext(), getImageObjects(uris), cacheLocation);
         if (maxWidth != -1 && maxHeight != -1) {
