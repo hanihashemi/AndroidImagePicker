@@ -11,6 +11,18 @@ import java.util.concurrent.TimeUnit;
  * Contains details about the file that was chosen.
  */
 public class ChosenFile implements Parcelable {
+    public static final Creator<ChosenFile> CREATOR = new Creator<ChosenFile>() {
+        @Override
+        public ChosenFile createFromParcel(Parcel source) {
+            return new ChosenFile(source);
+        }
+
+        @Override
+        public ChosenFile[] newArray(int size) {
+            return new ChosenFile[size];
+        }
+    };
+    private final static String STRING_FORMAT = "Type: %s, QueryUri: %s, Original Path: %s, MimeType: %s, Size: %s";
     private long id;
     private String queryUri;
     /**
@@ -40,60 +52,31 @@ public class ChosenFile implements Parcelable {
      */
 
     private int requestId;
-
     private String displayName;
     private boolean success;
-
     private String tempFile = "";
+    private String directoryType;
 
     public ChosenFile() {
 
     }
 
     protected ChosenFile(Parcel in) {
-        id = in.readLong();
-        queryUri = in.readString();
-        originalPath = in.readString();
-        mimeType = in.readString();
-        size = in.readLong();
-        extension = in.readString();
-        createdAt = new Date(in.readLong());
-        type = in.readString();
-        displayName = in.readString();
-        success = in.readByte() != 0;
-        directoryType = in.readString();
-        requestId = in.readInt();
-        tempFile = in.readString();
+        this.id = in.readLong();
+        this.queryUri = in.readString();
+        this.originalPath = in.readString();
+        this.mimeType = in.readString();
+        this.size = in.readLong();
+        this.extension = in.readString();
+        long tmpCreatedAt = in.readLong();
+        this.createdAt = tmpCreatedAt == -1 ? null : new Date(tmpCreatedAt);
+        this.type = in.readString();
+        this.requestId = in.readInt();
+        this.displayName = in.readString();
+        this.success = in.readByte() != 0;
+        this.tempFile = in.readString();
+        this.directoryType = in.readString();
     }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
-        dest.writeString(queryUri);
-        dest.writeString(originalPath);
-        dest.writeString(mimeType);
-        dest.writeLong(size);
-        dest.writeString(extension);
-        dest.writeLong(createdAt.getTime());
-        dest.writeString(type);
-        dest.writeString(displayName);
-        dest.writeInt(success ? 1 : 0);
-        dest.writeString(directoryType);
-        dest.writeInt(requestId);
-        dest.writeString(tempFile);
-    }
-
-    public static final Creator<ChosenFile> CREATOR = new Creator<ChosenFile>() {
-        @Override
-        public ChosenFile createFromParcel(Parcel in) {
-            return new ChosenFile(in);
-        }
-
-        @Override
-        public ChosenFile[] newArray(int size) {
-            return new ChosenFile[size];
-        }
-    };
 
     /**
      * If this file has been successfully processed.
@@ -121,8 +104,6 @@ public class ChosenFile implements Parcelable {
         this.displayName = displayName;
     }
 
-    private String directoryType;
-
     /**
      * Internal use
      *
@@ -130,6 +111,10 @@ public class ChosenFile implements Parcelable {
      */
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     /**
@@ -143,10 +128,6 @@ public class ChosenFile implements Parcelable {
 
     public void setDirectoryType(String directoryType) {
         this.directoryType = directoryType;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getQueryUri() {
@@ -253,8 +234,6 @@ public class ChosenFile implements Parcelable {
         return getFileExtensionFromMimeType().replace(".", "");
     }
 
-    private final static String STRING_FORMAT = "Type: %s, QueryUri: %s, Original Path: %s, MimeType: %s, Size: %s";
-
     @Override
     public String toString() {
         return String.format(STRING_FORMAT, type, queryUri, originalPath, mimeType, getHumanReadableSize(false));
@@ -294,17 +273,33 @@ public class ChosenFile implements Parcelable {
         this.requestId = requestId;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-
     public String getTempFile() {
         return tempFile;
     }
 
     public void setTempFile(String tempFile) {
         this.tempFile = tempFile;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.queryUri);
+        dest.writeString(this.originalPath);
+        dest.writeString(this.mimeType);
+        dest.writeLong(this.size);
+        dest.writeString(this.extension);
+        dest.writeLong(this.createdAt != null ? this.createdAt.getTime() : -1);
+        dest.writeString(this.type);
+        dest.writeInt(this.requestId);
+        dest.writeString(this.displayName);
+        dest.writeByte(this.success ? (byte) 1 : (byte) 0);
+        dest.writeString(this.tempFile);
+        dest.writeString(this.directoryType);
     }
 }
