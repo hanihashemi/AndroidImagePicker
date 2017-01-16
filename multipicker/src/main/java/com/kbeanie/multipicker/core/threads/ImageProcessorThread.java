@@ -92,6 +92,11 @@ public final class ImageProcessorThread extends FileProcessorThread {
     }
 
     private ChosenImage generateMetadata(ChosenImage image) {
+        float[] latLong = getLatLong(image.getOriginalPath());
+        if (latLong != null) {
+            image.setLat(latLong[0]);
+            image.setLng(latLong[1]);
+        }
         image.setWidth(Integer.parseInt(getWidthOfImage(image.getOriginalPath())));
         image.setHeight(Integer.parseInt(getHeightOfImage(image.getOriginalPath())));
         image.setOrientation(getOrientation(image.getOriginalPath()));

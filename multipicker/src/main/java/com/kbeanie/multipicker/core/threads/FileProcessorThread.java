@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.location.Location;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
@@ -57,9 +58,9 @@ public class FileProcessorThread extends Thread {
     protected final static int THUMBNAIL_BIG = 1;
     protected final static int THUMBNAIL_SMALL = 2;
     private final static String TAG = FileProcessorThread.class.getSimpleName();
-    private final int cacheLocation;
     protected final Context context;
     protected final List<? extends ChosenFile> files;
+    private final int cacheLocation;
     private FilePickerCallback callback;
 
     private int requestId;
@@ -426,10 +427,6 @@ public class FileProcessorThread extends Thread {
         return null;
     }
 
-    private boolean isExternalStorageDocument(Uri uri) {
-        return "com.android.externalstorage.documents".equals(uri.getAuthority());
-    }
-
     private boolean isDownloadsDocument(Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
@@ -596,24 +593,8 @@ public class FileProcessorThread extends Thread {
                 + fileName;
     }
 
-    protected String generateFileNameForVideoPreviewImage() throws PickerException {
-        String fileName = UUID.randomUUID().toString();
-        // If File name already contains an extension, we don't need to guess the extension
-        String extension = ".jpg";
-        if (extension != null && !extension.isEmpty()) {
-            fileName += extension;
-        }
-        return getTargetDirectory(Environment.DIRECTORY_PICTURES) + File.separator
-                + fileName;
-    }
-
-
     protected Activity getActivityFromContext() {
         return (Activity) context;
-    }
-
-    public void setFilePickerCallback(FilePickerCallback callback) {
-        this.callback = callback;
     }
 
     protected ChosenImage ensureMaxWidthAndHeight(int maxWidth, int maxHeight, ChosenImage image) {
@@ -805,5 +786,28 @@ public class FileProcessorThread extends Thread {
             e.printStackTrace();
         }
         return orientation;
+    }
+
+    protected float[] getLatLong(String image) {
+        try {
+            ExifInterface exif = new ExifInterface(image);
+            String gpsLatitude = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
+            String gpsLatitudeRef = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF);
+            String gpsLongitude = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
+            String gpsLongitudeRef = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF);
+
+            Log.d("TAG", "=======> originalPath= " + image);
+            Log.d("TAG", "=======> gpsLatitude= " + gpsLatitude);
+            Log.d("TAG", "=======> gpsLatitudeRef= " + gpsLatitudeRef);
+            Log.d("TAG", "=======> gpsLongitude= " + gpsLongitude);
+            Log.d("TAG", "=======> gpsLongitudeRef= " + gpsLongitudeRef);
+
+            float[] latLong = new float[2];
+            if (exif.getLatLong(latLong))
+                return latLong;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
