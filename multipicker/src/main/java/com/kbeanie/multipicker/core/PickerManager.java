@@ -56,40 +56,6 @@ public abstract class PickerManager {
         this.pickerType = pickerType;
     }
 
-    public static long querySizeOfFile(Uri uri, Context context) {
-        if (uri.toString().startsWith("file")) {
-            File file = new File(uri.getPath());
-            return file.length();
-        } else if (uri.toString().startsWith("content")) {
-            Cursor cursor = null;
-            try {
-                cursor = context.getContentResolver().query(uri, null, null, null, null);
-                if (cursor != null && cursor.moveToFirst()) {
-                    return cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE));
-                } else {
-                    return 0;
-                }
-            } catch (Exception e) {
-                return 0;
-            } finally {
-                cursor.close();
-            }
-        }
-        return 0;
-    }
-
-    /**
-     * Set extras which will be directly passed to the target applications. You should use this
-     * to take advantage of specific applications
-     * ex. Some applications support cropping, or editing the image itself before they give you
-     * the final image
-     *
-     * @param extras
-     */
-    public void setExtras(Bundle extras) {
-        this.extras = extras;
-    }
-
     /**
      * Default cache location is {@link CacheLocation#EXTERNAL_STORAGE_APP_DIR}
      * <p/>
