@@ -80,6 +80,18 @@
                 android:textSize="10dp"
                 android:textStyle="bold"
                 tools:text="ROTATE_90" />
+
+            <TextView
+                android:id="@+id/tvLoction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:background="@drawable/badge_bg"
+                android:padding="3dp"
+                android:textColor="@color/white"
+                android:textSize="10dp"
+                android:textStyle="bold"
+                tools:text="1800w x 900h" />
         </LinearLayout>
 
         <LinearLayout

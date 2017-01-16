@@ -7,13 +7,27 @@ import android.os.Parcel;
  * Contains details about the image that was chosen
  */
 public class ChosenImage extends ChosenFile {
+    public static final Creator<ChosenImage> CREATOR = new Creator<ChosenImage>() {
+        @Override
+        public ChosenImage createFromParcel(Parcel source) {
+            return new ChosenImage(source);
+        }
+
+        @Override
+        public ChosenImage[] newArray(int size) {
+            return new ChosenImage[size];
+        }
+    };
+    private final static String STRING_FORMAT = "Height: %s, Width: %s, Orientation: %s";
     private int orientation;
     private String thumbnailPath;
     private String thumbnailSmallPath;
     private int width;
     private int height;
+    private float lat;
+    private float lng;
 
-    public ChosenImage(){
+    public ChosenImage() {
 
     }
 
@@ -24,20 +38,29 @@ public class ChosenImage extends ChosenFile {
         this.thumbnailSmallPath = in.readString();
         this.width = in.readInt();
         this.height = in.readInt();
+        this.lat = in.readFloat();
+        this.lng = in.readFloat();
     }
 
+    public float getLat() {
+        return lat;
+    }
 
-    public static final Creator<ChosenImage> CREATOR = new Creator<ChosenImage>() {
-        @Override
-        public ChosenImage createFromParcel(Parcel in) {
-            return new ChosenImage(in);
-        }
+    public void setLat(float lat) {
+        this.lat = lat;
+    }
 
-        @Override
-        public ChosenImage[] newArray(int size) {
-            return new ChosenImage[size];
-        }
-    };
+    public boolean hasLocation() {
+        return lat > 1 && lng > 1;
+    }
+
+    public float getLng() {
+        return lng;
+    }
+
+    public void setLng(float lng) {
+        this.lng = lng;
+    }
 
     /**
      * Get orientation of the actual image
@@ -104,8 +127,6 @@ public class ChosenImage extends ChosenFile {
         this.height = height;
     }
 
-    private final static String STRING_FORMAT = "Height: %s, Width: %s, Orientation: %s";
-
     @Override
     public String toString() {
         return super.toString() + " " + String.format(STRING_FORMAT, height, width, getOrientationName());
@@ -148,12 +169,19 @@ public class ChosenImage extends ChosenFile {
     }
 
     @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeInt(orientation);
-        dest.writeString(thumbnailPath);
-        dest.writeString(thumbnailSmallPath);
-        dest.writeInt(width);
-        dest.writeInt(height);
+        dest.writeInt(this.orientation);
+        dest.writeString(this.thumbnailPath);
+        dest.writeString(this.thumbnailSmallPath);
+        dest.writeInt(this.width);
+        dest.writeInt(this.height);
+        dest.writeFloat(this.lat);
+        dest.writeFloat(this.lng);
     }
 }
