@@ -58,21 +58,11 @@ public abstract class PickerManager {
 
     /**
      * Default cache location is {@link CacheLocation#EXTERNAL_STORAGE_APP_DIR}
-     * <p/>
-     * If you are setting the (@link CacheLocation#EXTERNAL_STORAGE_PUBLIC_DIR} make sure you have the required permissions
-     * available in the Manifest file. Else, a {@link RuntimeException} will be raised.
-     * <p/>
-     * Permissions required {@link android.Manifest.permission#WRITE_EXTERNAL_STORAGE} and
-     * {@link android.Manifest.permission#READ_EXTERNAL_STORAGE}
      *
      * @param cacheLocation {@link CacheLocation}
      */
     public void setCacheLocation(int cacheLocation) {
         this.cacheLocation = cacheLocation;
-
-        if (cacheLocation == CacheLocation.EXTERNAL_STORAGE_PUBLIC_DIR) {
-            checkIfPermissionsAvailable();
-        }
     }
 
     public void setFolderName(String folderName) {
@@ -152,23 +142,6 @@ public abstract class PickerManager {
 
     public void setRequestId(int requestId) {
         this.requestId = requestId;
-    }
-
-    private void checkIfPermissionsAvailable() {
-        boolean writePermissionInManifest = getContext().checkCallingOrSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        Log.d(TAG, "checkIfPermissionsAvailable: In Manifest(WRITE_EXTERNAL_STORAGE): " + writePermissionInManifest);
-        boolean readPermissionInManifest = getContext().checkCallingOrSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        Log.d(TAG, "checkIfPermissionsAvailable: In Manifest(READ_EXTERNAL_STORAGE): " + readPermissionInManifest);
-
-        if (!writePermissionInManifest || !readPermissionInManifest) {
-            if (!writePermissionInManifest) {
-                Log.e(TAG, Manifest.permission.WRITE_EXTERNAL_STORAGE + " permission is missing in manifest file");
-            }
-            if (!readPermissionInManifest) {
-                Log.e(TAG, Manifest.permission.READ_EXTERNAL_STORAGE + " permission is missing in manifest file");
-            }
-            throw new RuntimeException("Permissions required in Manifest");
-        }
     }
 
     protected String getNewFileLocation(String extension, String type) throws PickerException {

@@ -481,11 +481,8 @@ public class FileProcessorThread extends Thread {
     }
 
     protected String getTargetDirectory(String type) throws PickerException {
-        String directory = null;
+        String directory;
         switch (cacheLocation) {
-            case CacheLocation.EXTERNAL_STORAGE_PUBLIC_DIR:
-                directory = FileUtils.getExternalFilesDirectory(type, context);
-                break;
             case CacheLocation.EXTERNAL_STORAGE_APP_DIR:
                 directory = FileUtils.getExternalFilesDir(type, context);
                 break;
