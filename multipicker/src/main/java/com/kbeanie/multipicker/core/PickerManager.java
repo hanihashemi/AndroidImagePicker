@@ -28,7 +28,6 @@ import storage.StoragePreferences;
  * Abstract class for all types of Pickers
  */
 public abstract class PickerManager {
-    private final static String TAG = PickerManager.class.getSimpleName();
     protected final int pickerType;
     protected Activity activity;
     protected Fragment fragment;
