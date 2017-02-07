@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.karumi.dexter.Dexter;
 import com.kbeanie.multipicker.api.CacheLocation;
 import com.kbeanie.multipicker.api.CameraImagePicker;
 import com.kbeanie.multipicker.api.ImagePicker;
@@ -23,6 +23,7 @@ import java.util.List;
  * Created by kbibek on 2/19/16.
  */
 public class ImagePickerActivity extends AppCompatActivity implements ImagePickerCallback, View.OnClickListener {
+    public static final String TAG = "ImagePickerActivity";
     private ListView lvResults;
 
     private ImagePicker imagePicker;
@@ -102,6 +103,10 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
     public void onImagesChosen(List<ChosenImage> images) {
         MediaResultsAdapter adapter = new MediaResultsAdapter(images, this);
         lvResults.setAdapter(adapter);
+
+        for (ChosenImage image : images) {
+            Log.d(TAG, image.toString());
+        }
     }
 
     @Override

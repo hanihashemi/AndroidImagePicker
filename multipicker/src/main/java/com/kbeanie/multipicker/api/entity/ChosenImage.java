@@ -129,7 +129,21 @@ public class ChosenImage extends ChosenFile {
 
     @Override
     public String toString() {
-        return super.toString() + " " + String.format(STRING_FORMAT, height, width, getOrientationName());
+        String result = "";
+        result += "type: " + getType() + "\r\n";
+        result += "width: " + getWidth() + "\r\n";
+        result += "height: " + getHeight() + "\r\n";
+        result += "orientation: " + getOrientationName() + "\r\n";
+        result += "has location: " + hasLocation() + "\r\n";
+        if (hasLocation()) {
+            result += "lat: " + getLat() + "\r\n";
+            result += "lng: " + getLng() + "\r\n";
+        }
+        result += "original path: " + getOriginalPath() + "\r\n";
+        result += "thumbnail: " + getThumbnailPath() + "\r\n";
+        result += "small thumbnail: " + getThumbnailSmallPath() + "\r\n";
+
+        return result;
     }
 
     /**
