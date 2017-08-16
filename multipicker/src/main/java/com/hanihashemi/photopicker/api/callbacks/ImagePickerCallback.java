@@ -1,6 +1,6 @@
-package com.kbeanie.multipicker.api.callbacks;
+package com.hanihashemi.photopicker.api.callbacks;
 
-import com.kbeanie.multipicker.api.entity.ChosenImage;
+import com.hanihashemi.photopicker.api.entity.ChosenImage;
 
 import java.util.List;
 

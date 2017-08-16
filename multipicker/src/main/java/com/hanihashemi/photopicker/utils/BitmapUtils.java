@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.utils;
+package com.hanihashemi.photopicker.utils;
 
 /**
  * Created by kbibek on 3/18/16.

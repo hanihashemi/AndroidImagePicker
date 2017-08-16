@@ -1,10 +1,10 @@
-package com.kbeanie.multipicker.api;
+package com.hanihashemi.photopicker.api;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 
-import com.kbeanie.multipicker.api.exceptions.PickerException;
-import com.kbeanie.multipicker.core.ImagePickerImpl;
+import com.hanihashemi.photopicker.api.exceptions.PickerException;
+import com.hanihashemi.photopicker.core.ImagePickerImpl;
 
 /**
  * Capture an image using the device's camera.

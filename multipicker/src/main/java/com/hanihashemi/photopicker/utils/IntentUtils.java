@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.utils;
+package com.hanihashemi.photopicker.utils;
 
 import android.content.Intent;
 import android.net.Uri;

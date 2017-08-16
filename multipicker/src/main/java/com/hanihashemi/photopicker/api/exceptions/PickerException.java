@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.api.exceptions;
+package com.hanihashemi.photopicker.api.exceptions;
 
 import android.content.ActivityNotFoundException;
 

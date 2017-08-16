@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.core.threads;
+package com.hanihashemi.photopicker.core.threads;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -20,14 +20,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
-import com.kbeanie.multipicker.api.CacheLocation;
-import com.kbeanie.multipicker.api.callbacks.FilePickerCallback;
-import com.kbeanie.multipicker.api.entity.ChosenFile;
-import com.kbeanie.multipicker.api.entity.ChosenImage;
-import com.kbeanie.multipicker.api.exceptions.PickerException;
-import com.kbeanie.multipicker.utils.BitmapUtils;
-import com.kbeanie.multipicker.utils.FileUtils;
-import com.kbeanie.multipicker.utils.MimeUtils;
+import com.hanihashemi.photopicker.api.CacheLocation;
+import com.hanihashemi.photopicker.api.callbacks.FilePickerCallback;
+import com.hanihashemi.photopicker.api.entity.ChosenFile;
+import com.hanihashemi.photopicker.api.entity.ChosenImage;
+import com.hanihashemi.photopicker.api.exceptions.PickerException;
+import com.hanihashemi.photopicker.utils.BitmapUtils;
+import com.hanihashemi.photopicker.utils.FileUtils;
+import com.hanihashemi.photopicker.utils.MimeUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -47,9 +47,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
-import static com.kbeanie.multipicker.utils.StreamHelper.close;
-import static com.kbeanie.multipicker.utils.StreamHelper.flush;
-import static com.kbeanie.multipicker.utils.StreamHelper.verifyStream;
+import static com.hanihashemi.photopicker.utils.StreamHelper.close;
+import static com.hanihashemi.photopicker.utils.StreamHelper.flush;
+import static com.hanihashemi.photopicker.utils.StreamHelper.verifyStream;
 
 /**
  * Created by kbibek on 2/20/16.

@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.core;
+package com.hanihashemi.photopicker.core;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -15,9 +15,9 @@ import android.provider.OpenableColumns;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
-import com.kbeanie.multipicker.api.CacheLocation;
-import com.kbeanie.multipicker.api.exceptions.PickerException;
-import com.kbeanie.multipicker.utils.FileUtils;
+import com.hanihashemi.photopicker.api.CacheLocation;
+import com.hanihashemi.photopicker.api.exceptions.PickerException;
+import com.hanihashemi.photopicker.utils.FileUtils;
 
 import java.io.File;
 import java.util.UUID;

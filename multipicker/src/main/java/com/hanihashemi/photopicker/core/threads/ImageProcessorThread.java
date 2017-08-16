@@ -1,12 +1,12 @@
-package com.kbeanie.multipicker.core.threads;
+package com.hanihashemi.photopicker.core.threads;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
-import com.kbeanie.multipicker.api.entity.ChosenFile;
-import com.kbeanie.multipicker.api.entity.ChosenImage;
-import com.kbeanie.multipicker.api.exceptions.PickerException;
+import com.hanihashemi.photopicker.api.callbacks.ImagePickerCallback;
+import com.hanihashemi.photopicker.api.entity.ChosenFile;
+import com.hanihashemi.photopicker.api.entity.ChosenImage;
+import com.hanihashemi.photopicker.api.exceptions.PickerException;
 
 import java.util.List;
 

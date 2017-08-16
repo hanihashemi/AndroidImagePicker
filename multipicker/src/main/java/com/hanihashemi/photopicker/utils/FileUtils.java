@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.utils;
+package com.hanihashemi.photopicker.utils;
 
 import android.Manifest;
 import android.content.Context;
@@ -9,7 +9,7 @@ import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import com.kbeanie.multipicker.api.exceptions.PickerException;
+import com.hanihashemi.photopicker.api.exceptions.PickerException;
 
 import java.io.File;
 import java.io.FileInputStream;

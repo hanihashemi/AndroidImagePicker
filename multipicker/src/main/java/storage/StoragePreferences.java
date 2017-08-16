@@ -9,7 +9,7 @@ import android.content.SharedPreferences;
 
 public class StoragePreferences {
     public SharedPreferences prefs;
-    private final static String FILE = "com.kbeanie.multipicker.preferences";
+    private final static String FILE = "com.hanihashemi.photopicker.preferences";
 
     private final static String KEY_FOLDER_NAME = "folder_name";
 

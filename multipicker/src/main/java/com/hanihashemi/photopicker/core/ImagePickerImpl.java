@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.core;
+package com.hanihashemi.photopicker.core;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -20,13 +20,13 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.kbeanie.multipicker.api.CameraImagePicker;
-import com.kbeanie.multipicker.api.ImagePicker;
-import com.kbeanie.multipicker.api.Picker;
-import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
-import com.kbeanie.multipicker.api.entity.ChosenImage;
-import com.kbeanie.multipicker.api.exceptions.PickerException;
-import com.kbeanie.multipicker.core.threads.ImageProcessorThread;
+import com.hanihashemi.photopicker.api.CameraImagePicker;
+import com.hanihashemi.photopicker.api.ImagePicker;
+import com.hanihashemi.photopicker.api.Picker;
+import com.hanihashemi.photopicker.api.callbacks.ImagePickerCallback;
+import com.hanihashemi.photopicker.api.entity.ChosenImage;
+import com.hanihashemi.photopicker.api.exceptions.PickerException;
+import com.hanihashemi.photopicker.core.threads.ImageProcessorThread;
 
 import java.io.File;
 import java.util.ArrayList;

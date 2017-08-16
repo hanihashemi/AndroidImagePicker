@@ -22,7 +22,7 @@ android {
     sourceSets{
         main{
             java {
-                exclude 'com.kbeanie.multipicker.test'
+                exclude 'com.hanihashemi.photopicker.test'
             }
         }
     }

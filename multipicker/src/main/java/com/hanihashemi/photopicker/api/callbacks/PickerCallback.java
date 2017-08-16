@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.api.callbacks;
+package com.hanihashemi.photopicker.api.callbacks;
 
 /**
  * Created by kbibek on 2/24/16.

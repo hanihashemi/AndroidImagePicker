@@ -1,6 +1,6 @@
-package com.kbeanie.multipicker;
+package com.hanihashemi.photopicker;
 
-import com.kbeanie.multipicker.utils.BitmapUtils;
+import com.hanihashemi.photopicker.utils.BitmapUtils;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;

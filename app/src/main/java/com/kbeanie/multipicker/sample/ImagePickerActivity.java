@@ -10,12 +10,12 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.kbeanie.multipicker.api.CacheLocation;
-import com.kbeanie.multipicker.api.CameraImagePicker;
-import com.kbeanie.multipicker.api.ImagePicker;
-import com.kbeanie.multipicker.api.Picker;
-import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
-import com.kbeanie.multipicker.api.entity.ChosenImage;
+import com.hanihashemi.photopicker.api.CacheLocation;
+import com.hanihashemi.photopicker.api.CameraImagePicker;
+import com.hanihashemi.photopicker.api.ImagePicker;
+import com.hanihashemi.photopicker.api.Picker;
+import com.hanihashemi.photopicker.api.callbacks.ImagePickerCallback;
+import com.hanihashemi.photopicker.api.entity.ChosenImage;
 
 import java.util.List;
 
