@@ -40,6 +40,8 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
         findViewById(R.id.btGallerySingleImage).setOnClickListener(this);
         findViewById(R.id.btGalleryMultipleImages).setOnClickListener(this);
         findViewById(R.id.btCameraImage).setOnClickListener(this);
+        findViewById(R.id.btCameraImageCrop).setOnClickListener(this);
+        findViewById(R.id.btGallerySingleImageCrop).setOnClickListener(this);
     }
 
     @Override
@@ -53,13 +55,31 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
                 break;
             case R.id.btCameraImage:
                 takePicture();
+            case R.id.btCameraImageCrop:
+                takePictureAndCrop();
+                break;
+            case R.id.btGallerySingleImageCrop:
+                pickImageSingleAndCrop();
                 break;
         }
     }
 
-    public void pickImageSingle() {
+    private void pickImageSingleAndCrop() {
         picker = new ImagePicker.Builder(this, this)
                 .shouldCrop(true)
+                .build();
+        picker.pickImage();
+    }
+
+    private void takePictureAndCrop() {
+        picker = new CameraImagePicker.Builder(this, this)
+                .shouldCrop(true)
+                .build();
+        picker.pickImage();
+    }
+
+    public void pickImageSingle() {
+        picker = new ImagePicker.Builder(this, this)
                 .build();
         picker.pickImage();
     }

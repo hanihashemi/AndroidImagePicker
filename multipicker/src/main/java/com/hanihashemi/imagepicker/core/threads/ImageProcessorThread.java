@@ -1,13 +1,16 @@
 package com.hanihashemi.imagepicker.core.threads;
 
+import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
+import android.net.Uri;
 
 import com.hanihashemi.imagepicker.api.callbacks.ImagePickerCallback;
 import com.hanihashemi.imagepicker.api.entity.ChosenImage;
 import com.hanihashemi.imagepicker.api.exceptions.PickerException;
 import com.hanihashemi.imagepicker.utils.Logger;
+import com.yalantis.ucrop.UCrop;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -18,14 +21,17 @@ public final class ImageProcessorThread extends FileProcessorThread {
 
     private boolean shouldGenerateThumbnails;
     private boolean shouldGenerateMetadata;
-
+    private boolean shouldCrop;
     private int maxImageWidth = -1;
     private int maxImageHeight = -1;
-
     private ImagePickerCallback callback;
 
     public ImageProcessorThread(Context context, List<ChosenImage> paths, int cacheLocation) {
         super(context, paths, cacheLocation);
+    }
+
+    public void setShouldCrop(boolean shouldCrop) {
+        this.shouldCrop = shouldCrop;
     }
 
     public void setShouldGenerateThumbnails(boolean shouldGenerateThumbnails) {
@@ -39,8 +45,14 @@ public final class ImageProcessorThread extends FileProcessorThread {
     @Override
     public void run() {
         super.run();
-        postProcessImages();
-        onDone();
+        if (shouldCrop) {
+            UCrop.of(Uri.fromFile(new File(files.get(0).getOriginalPath())), Uri.fromFile(new File(files.get(0).getOriginalPath())))
+                    .withAspectRatio(1, 1)
+                    .start((Activity) context);
+        } else {
+            postProcessImages();
+            onDone();
+        }
     }
 
     private void onDone() {

@@ -13,7 +13,6 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.util.Log;
 
 import com.hanihashemi.imagepicker.api.CameraImagePicker;
 import com.hanihashemi.imagepicker.api.ImagePicker;
@@ -28,10 +27,13 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Class to pick images (Stored or capture a new image using the device's camera)
@@ -46,7 +48,6 @@ public abstract class PickerImpl extends PickerManager {
     private int maxHeight = -1;
     private String cameraFilePath;
     private boolean crop = false;
-
 
     /**
      * @param activity {@link Activity}
@@ -220,12 +221,23 @@ public abstract class PickerImpl extends PickerManager {
      */
     @Override
     public void getActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == Picker.PICK_IMAGE_DEVICE) {
-                handleGalleryData(data);
-            } else if (requestCode == Picker.PICK_IMAGE_CAMERA) {
-                handleCameraData(cameraFilePath);
-            }
+        if (requestCode == UCrop.REQUEST_CROP) {
+            handleCropData(resultCode, data);
+        } else if (resultCode == RESULT_OK && requestCode == Picker.PICK_IMAGE_DEVICE) {
+            handleGalleryData(data);
+        } else if (resultCode == RESULT_OK && requestCode == Picker.PICK_IMAGE_CAMERA) {
+            handleCameraData(cameraFilePath);
+        }
+    }
+
+    private void handleCropData(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            List<String> uris = new ArrayList<>();
+            uris.add(UCrop.getOutput(data).toString());
+
+            processImages(uris, false);
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            throw new RuntimeException(UCrop.getError(data));
         }
     }
 
@@ -235,7 +247,7 @@ public abstract class PickerImpl extends PickerManager {
         } else {
             List<String> uris = new ArrayList<>();
             uris.add(Uri.fromFile(new File(path)).toString());
-            processImages(uris);
+            processImages(uris, crop && uris.size() == 1);
         }
     }
 
@@ -265,11 +277,11 @@ public abstract class PickerImpl extends PickerManager {
                 }
             }
 
-            processImages(uris);
+            processImages(uris, crop && uris.size() == 1);
         }
     }
 
-    private void processImages(List<String> uris) {
+    private void processImages(List<String> uris, boolean shouldCrop) {
         ImageProcessorThread thread = new ImageProcessorThread(getActivity(), getImageObjects(uris), cacheLocation);
         if (maxWidth != -1 && maxHeight != -1) {
             thread.setOutputImageDimensions(maxWidth, maxHeight);
@@ -277,6 +289,7 @@ public abstract class PickerImpl extends PickerManager {
         thread.setShouldGenerateThumbnails(generateThumbnails);
         thread.setShouldGenerateMetadata(generateMetadata);
         thread.setImagePickerCallback(callback);
+        thread.setShouldCrop(shouldCrop);
         thread.start();
     }
 

@@ -19,17 +19,34 @@
         android:paddingRight="10dp"
         android:paddingStart="10dp">
 
-        <Button android:id="@+id/btGallerySingleImage"
+        <Button
+            android:id="@+id/btGallerySingleImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="From Gallery - Single Image" />
-        <Button android:id="@+id/btGalleryMultipleImages"
+
+        <Button
+            android:id="@+id/btGallerySingleImageCrop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="From Gallery - Single Image - Crop" />
+
+        <Button
+            android:id="@+id/btGalleryMultipleImages"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="From Gallery - Multiple Images" />
-        <Button android:id="@+id/btCameraImage"
+
+        <Button
+            android:id="@+id/btCameraImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Use Camera" />
+
+        <Button
+            android:id="@+id/btCameraImageCrop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Use Camera - Crop" />
     </LinearLayout>
 </LinearLayout>

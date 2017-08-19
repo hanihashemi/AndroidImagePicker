@@ -16,7 +16,6 @@ import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import com.hanihashemi.imagepicker.api.CacheLocation;
@@ -57,8 +56,8 @@ public class FileProcessorThread extends Thread {
     final static int THUMBNAIL_SMALL = 2;
     private final static String TAG = FileProcessorThread.class.getSimpleName();
     final List<? extends ChosenImage> files;
-    private final Context context;
     private final int cacheLocation;
+    Context context;
 
     FileProcessorThread(Context context, List<? extends ChosenImage> files, int cacheLocation) {
         this.context = context;
