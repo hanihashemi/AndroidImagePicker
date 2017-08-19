@@ -21,7 +21,6 @@ import android.webkit.MimeTypeMap;
 
 import com.hanihashemi.imagepicker.api.CacheLocation;
 import com.hanihashemi.imagepicker.api.callbacks.FilePickerCallback;
-import com.hanihashemi.imagepicker.api.entity.ChosenFile;
 import com.hanihashemi.imagepicker.api.entity.ChosenImage;
 import com.hanihashemi.imagepicker.api.exceptions.PickerException;
 import com.hanihashemi.imagepicker.utils.BitmapUtils;
@@ -58,11 +57,11 @@ public class FileProcessorThread extends Thread {
     protected final static int THUMBNAIL_SMALL = 2;
     private final static String TAG = FileProcessorThread.class.getSimpleName();
     protected final Context context;
-    protected final List<? extends ChosenFile> files;
+    protected final List<? extends ChosenImage> files;
     private final int cacheLocation;
     private FilePickerCallback callback;
 
-    public FileProcessorThread(Context context, List<? extends ChosenFile> files, int cacheLocation) {
+    public FileProcessorThread(Context context, List<? extends ChosenImage> files, int cacheLocation) {
         this.context = context;
         this.files = files;
         this.cacheLocation = cacheLocation;
@@ -82,7 +81,7 @@ public class FileProcessorThread extends Thread {
                 ((Activity) context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        callback.onFilesChosen((List<ChosenFile>) files);
+                        callback.onFilesChosen((List<ChosenImage>) files);
                     }
                 });
             }
@@ -92,7 +91,7 @@ public class FileProcessorThread extends Thread {
     }
 
     protected void processFiles() {
-        for (ChosenFile file : files) {
+        for (ChosenImage file : files) {
             try {
                 Log.d(TAG, "processFile: Before: " + file.toString());
                 processFile(file);
@@ -107,7 +106,7 @@ public class FileProcessorThread extends Thread {
     }
 
     protected void postProcessFiles() {
-        for (ChosenFile file : files) {
+        for (ChosenImage file : files) {
             try {
                 postProcess(file);
             } catch (Exception e) {
@@ -116,14 +115,14 @@ public class FileProcessorThread extends Thread {
         }
     }
 
-    private void postProcess(ChosenFile file) throws PickerException {
+    private void postProcess(ChosenImage file) throws PickerException {
         file.setCreatedAt(Calendar.getInstance().getTime());
         File f = new File(file.getOriginalPath());
         file.setSize(f.length());
         copyFileToFolder(file);
     }
 
-    private void copyFileToFolder(ChosenFile file) throws PickerException {
+    private void copyFileToFolder(ChosenImage file) throws PickerException {
         Log.d(TAG, "copyFileToFolder: folder: " + file.getDirectoryType());
         Log.d(TAG, "copyFileToFolder: extension: " + file.getExtension());
         Log.d(TAG, "copyFileToFolder: mimeType: " + file.getMimeType());
@@ -150,7 +149,7 @@ public class FileProcessorThread extends Thread {
         }
     }
 
-    private void processFile(ChosenFile file) throws PickerException {
+    private void processFile(ChosenImage file) throws PickerException {
         String uri = file.getQueryUri();
         if (uri.startsWith("file://") || uri.startsWith("/")) {
             file = sanitizeUri(file);
@@ -184,14 +183,14 @@ public class FileProcessorThread extends Thread {
     }
 
     // If starts with file: (For some content providers, remove the file prefix)
-    private ChosenFile sanitizeUri(ChosenFile file) {
+    private ChosenImage sanitizeUri(ChosenImage file) {
         if (file.getQueryUri().startsWith("file://")) {
             file.setOriginalPath(file.getQueryUri().substring(7));
         }
         return file;
     }
 
-    protected ChosenFile getFromContentProviderAlternate(ChosenFile file) throws PickerException {
+    protected ChosenImage getFromContentProviderAlternate(ChosenImage file) throws PickerException {
         BufferedOutputStream outStream = null;
         BufferedInputStream bStream = null;
 
@@ -231,7 +230,7 @@ public class FileProcessorThread extends Thread {
         return file;
     }
 
-    protected ChosenFile getFromContentProvider(ChosenFile file) throws PickerException {
+    protected ChosenImage getFromContentProvider(ChosenImage file) throws PickerException {
 
         BufferedInputStream inputStream = null;
         BufferedOutputStream outStream = null;
@@ -277,7 +276,7 @@ public class FileProcessorThread extends Thread {
 
     // Try to get a local copy if available
 
-    private ChosenFile getAbsolutePathIfAvailable(ChosenFile file) {
+    private ChosenImage getAbsolutePathIfAvailable(ChosenImage file) {
         String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.DISPLAY_NAME, MediaStore.MediaColumns.MIME_TYPE};
 
         // Workaround for various implementations for Google Photos/Picasa
@@ -343,7 +342,7 @@ public class FileProcessorThread extends Thread {
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    private String[] getPathAndMimeType(ChosenFile file) {
+    private String[] getPathAndMimeType(ChosenImage file) {
 
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
         Uri uri = Uri.parse(file.getOriginalPath());
@@ -427,7 +426,7 @@ public class FileProcessorThread extends Thread {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
-    private ChosenFile downloadAndSaveFile(ChosenFile file) {
+    private ChosenImage downloadAndSaveFile(ChosenImage file) {
         String localFilePath;
         try {
             URL u = new URL(file.getQueryUri());
@@ -519,7 +518,7 @@ public class FileProcessorThread extends Thread {
         return mimeType;
     }
 
-    private String getTargetLocationToCopy(ChosenFile file) throws PickerException {
+    private String getTargetLocationToCopy(ChosenImage file) throws PickerException {
         String fileName = file.getDisplayName();
         if (fileName == null || fileName.isEmpty()) {
             fileName = UUID.randomUUID().toString();
@@ -539,7 +538,7 @@ public class FileProcessorThread extends Thread {
         return probableFile.getAbsolutePath();
     }
 
-    private String generateFileName(ChosenFile file) throws PickerException {
+    private String generateFileName(ChosenImage file) throws PickerException {
         String fileName = file.getDisplayName();
         if (fileName == null || fileName.isEmpty()) {
             fileName = UUID.randomUUID().toString();

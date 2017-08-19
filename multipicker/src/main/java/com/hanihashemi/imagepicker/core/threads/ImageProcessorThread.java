@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.hanihashemi.imagepicker.api.callbacks.ImagePickerCallback;
-import com.hanihashemi.imagepicker.api.entity.ChosenFile;
 import com.hanihashemi.imagepicker.api.entity.ChosenImage;
 import com.hanihashemi.imagepicker.api.exceptions.PickerException;
 
@@ -59,8 +58,7 @@ public final class ImageProcessorThread extends FileProcessorThread {
     }
 
     private void postProcessImages() {
-        for (ChosenFile file : files) {
-            ChosenImage image = (ChosenImage) file;
+        for (ChosenImage image : files) {
             try {
                 postProcessImage(image);
                 image.setSuccess(true);
@@ -105,7 +103,7 @@ public final class ImageProcessorThread extends FileProcessorThread {
 
     private ChosenImage generateThumbnails(ChosenImage image) throws PickerException {
         String thumbnailBig = downScaleAndSaveImage(image.getOriginalPath(), THUMBNAIL_BIG);
-        image.setThumbnailPath(thumbnailBig);
+        image.setOriginalPath(thumbnailBig);
         String thumbnailSmall = downScaleAndSaveImage(image.getOriginalPath(), THUMBNAIL_SMALL);
         image.setThumbnailSmallPath(thumbnailSmall);
         return image;
@@ -119,5 +117,4 @@ public final class ImageProcessorThread extends FileProcessorThread {
         this.maxImageWidth = maxWidth;
         this.maxImageHeight = maxHeight;
     }
-
 }

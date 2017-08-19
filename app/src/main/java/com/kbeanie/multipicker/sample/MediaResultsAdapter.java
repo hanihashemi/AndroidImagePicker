@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.hanihashemi.imagepicker.api.entity.ChosenFile;
 import com.hanihashemi.imagepicker.api.entity.ChosenImage;
 
 import java.io.File;
@@ -31,9 +30,9 @@ public class MediaResultsAdapter extends BaseAdapter {
     private final static String FORMAT_ORIENTATION = "Ortn: %s";
 
     private final Context context;
-    private List<? extends ChosenFile> files;
+    private List<? extends ChosenImage> files;
 
-    public MediaResultsAdapter(List<? extends ChosenFile> files, Context context) {
+    public MediaResultsAdapter(List<? extends ChosenImage> files, Context context) {
         this.files = files;
         this.context = context;
     }
@@ -56,7 +55,7 @@ public class MediaResultsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Log.d(TAG, "getView: " + files.size());
-        ChosenFile file = (ChosenFile) getItem(position);
+        ChosenImage file = (ChosenImage) getItem(position);
         int itemViewType = getItemViewType(position);
         if (convertView == null) {
             switch (itemViewType) {
@@ -74,8 +73,8 @@ public class MediaResultsAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void showImage(ChosenFile file, View view) {
-        final ChosenImage image = (ChosenImage) file;
+    private void showImage(ChosenImage file, View view) {
+        final ChosenImage image = file;
 
         TextView tvName = (TextView) view.findViewById(R.id.tvName);
         tvName.setText(file.getDisplayName());
