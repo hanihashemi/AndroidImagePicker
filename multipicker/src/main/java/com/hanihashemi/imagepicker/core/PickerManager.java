@@ -59,7 +59,7 @@ public abstract class PickerManager {
     /**
      * This method should be called after {@link Activity#onActivityResult(int, int, Intent)} is  called.
      */
-    public abstract void getActivityResult(int requestCode, int resultCode, Intent data);
+    public abstract void getActivityResult(Activity activity, int requestCode, int resultCode, Intent data);
 
     String buildFilePath(String extension, String type) throws PickerException {
         String directoryPath = getDirectory(type);
@@ -70,20 +70,19 @@ public abstract class PickerManager {
         String directory = null;
         switch (cacheLocation) {
             case CacheLocation.EXTERNAL_STORAGE_APP_DIR:
-                directory = FileUtils.getExternalFilesDir(type, getContext());
+                directory = FileUtils.getExternalFilesDir(type, getActivity());
                 break;
             case CacheLocation.EXTERNAL_CACHE_DIR:
-                directory = FileUtils.getExternalCacheDir(getContext());
+                directory = FileUtils.getExternalCacheDir(getActivity());
                 break;
             case CacheLocation.INTERNAL_APP_DIR:
-                directory = FileUtils.getInternalFileDirectory(getContext());
+                directory = FileUtils.getInternalFileDirectory(getActivity());
                 break;
         }
         return directory;
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    Context getContext() {
+    Activity getActivity() {
         if (activity != null) {
             return activity;
         } else if (fragment != null) {
@@ -120,7 +119,7 @@ public abstract class PickerManager {
         if (type.equals(Environment.DIRECTORY_PICTURES)) {
             filePathName = "pictures";
         }
-        file = new File(getContext().getFilesDir(), filePathName);
+        file = new File(getActivity().getFilesDir(), filePathName);
         //noinspection ResultOfMethodCallIgnored
         file.mkdirs();
 
@@ -129,6 +128,6 @@ public abstract class PickerManager {
     }
 
     String getFileProviderAuthority() {
-        return getContext().getPackageName() + ".multipicker.fileprovider";
+        return getActivity().getPackageName() + ".multipicker.fileprovider";
     }
 }

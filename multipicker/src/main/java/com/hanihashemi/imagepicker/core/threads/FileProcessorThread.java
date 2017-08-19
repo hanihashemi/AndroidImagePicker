@@ -20,7 +20,6 @@ import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import com.hanihashemi.imagepicker.api.CacheLocation;
-import com.hanihashemi.imagepicker.api.callbacks.FilePickerCallback;
 import com.hanihashemi.imagepicker.api.entity.ChosenImage;
 import com.hanihashemi.imagepicker.api.exceptions.PickerException;
 import com.hanihashemi.imagepicker.utils.BitmapUtils;
@@ -53,15 +52,14 @@ import static com.hanihashemi.imagepicker.utils.StreamHelper.verifyStream;
  * Created by kbibek on 2/20/16.
  */
 public class FileProcessorThread extends Thread {
-    protected final static int THUMBNAIL_BIG = 1;
-    protected final static int THUMBNAIL_SMALL = 2;
+    final static int THUMBNAIL_BIG = 1;
+    final static int THUMBNAIL_SMALL = 2;
     private final static String TAG = FileProcessorThread.class.getSimpleName();
-    protected final Context context;
-    protected final List<? extends ChosenImage> files;
+    final List<? extends ChosenImage> files;
+    private final Context context;
     private final int cacheLocation;
-    private FilePickerCallback callback;
 
-    public FileProcessorThread(Context context, List<? extends ChosenImage> files, int cacheLocation) {
+    FileProcessorThread(Context context, List<? extends ChosenImage> files, int cacheLocation) {
         this.context = context;
         this.files = files;
         this.cacheLocation = cacheLocation;
@@ -70,27 +68,9 @@ public class FileProcessorThread extends Thread {
     @Override
     public void run() {
         processFiles();
-        if (callback != null) {
-            onDone();
-        }
     }
 
-    private void onDone() {
-        try {
-            if (callback != null) {
-                ((Activity) context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        callback.onFilesChosen((List<ChosenImage>) files);
-                    }
-                });
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
-
-    protected void processFiles() {
+    private void processFiles() {
         for (ChosenImage file : files) {
             try {
                 Log.d(TAG, "processFile: Before: " + file.toString());
@@ -101,16 +81,6 @@ public class FileProcessorThread extends Thread {
             } catch (PickerException e) {
                 e.printStackTrace();
                 file.setSuccess(false);
-            }
-        }
-    }
-
-    protected void postProcessFiles() {
-        for (ChosenImage file : files) {
-            try {
-                postProcess(file);
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }
@@ -190,7 +160,7 @@ public class FileProcessorThread extends Thread {
         return file;
     }
 
-    protected ChosenImage getFromContentProviderAlternate(ChosenImage file) throws PickerException {
+    private ChosenImage getFromContentProviderAlternate(ChosenImage file) throws PickerException {
         BufferedOutputStream outStream = null;
         BufferedInputStream bStream = null;
 
@@ -230,7 +200,7 @@ public class FileProcessorThread extends Thread {
         return file;
     }
 
-    protected ChosenImage getFromContentProvider(ChosenImage file) throws PickerException {
+    private ChosenImage getFromContentProvider(ChosenImage file) throws PickerException {
 
         BufferedInputStream inputStream = null;
         BufferedOutputStream outStream = null;
@@ -471,7 +441,7 @@ public class FileProcessorThread extends Thread {
         return file;
     }
 
-    protected String getTargetDirectory(String type) throws PickerException {
+    private String getTargetDirectory(String type) throws PickerException {
         String directory;
         switch (cacheLocation) {
             case CacheLocation.EXTERNAL_CACHE_DIR:
@@ -579,11 +549,11 @@ public class FileProcessorThread extends Thread {
                 + fileName;
     }
 
-    protected Activity getActivityFromContext() {
+    Activity getActivityFromContext() {
         return (Activity) context;
     }
 
-    protected ChosenImage ensureMaxWidthAndHeight(int maxWidth, int maxHeight, ChosenImage image) {
+    ChosenImage ensureMaxWidthAndHeight(int maxWidth, int maxHeight, ChosenImage image) {
         try {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
@@ -635,7 +605,7 @@ public class FileProcessorThread extends Thread {
         return image;
     }
 
-    protected String downScaleAndSaveImage(String image, int scale) throws PickerException {
+    String downScaleAndSaveImage(String image, int scale) throws PickerException {
 
         FileOutputStream stream = null;
         BufferedInputStream bstream = null;
@@ -726,7 +696,7 @@ public class FileProcessorThread extends Thread {
         return null;
     }
 
-    protected String getWidthOfImage(String path) {
+    String getWidthOfImage(String path) {
         String width = "";
         try {
             ExifInterface exif = new ExifInterface(path);
@@ -740,7 +710,7 @@ public class FileProcessorThread extends Thread {
         return width;
     }
 
-    protected String getHeightOfImage(String path) {
+    String getHeightOfImage(String path) {
         String height = "";
         try {
             ExifInterface exif = new ExifInterface(path);
@@ -754,13 +724,13 @@ public class FileProcessorThread extends Thread {
         return height;
     }
 
-    protected SoftReference<Bitmap> getBitmapImage(String path) {
+    private SoftReference<Bitmap> getBitmapImage(String path) {
         SoftReference<Bitmap> bitmap;
         bitmap = new SoftReference<>(BitmapFactory.decodeFile(Uri.fromFile(new File(path)).getPath()));
         return bitmap;
     }
 
-    protected int getOrientation(String image) {
+    int getOrientation(String image) {
         int orientation = ExifInterface.ORIENTATION_NORMAL;
         try {
             ExifInterface exif = new ExifInterface(image);
@@ -774,19 +744,9 @@ public class FileProcessorThread extends Thread {
         return orientation;
     }
 
-    protected float[] getLatLong(String image) {
+    float[] getLatLong(String image) {
         try {
             ExifInterface exif = new ExifInterface(image);
-            String gpsLatitude = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
-            String gpsLatitudeRef = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF);
-            String gpsLongitude = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
-            String gpsLongitudeRef = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF);
-
-            Log.d("TAG", "=======> originalPath= " + image);
-            Log.d("TAG", "=======> gpsLatitude= " + gpsLatitude);
-            Log.d("TAG", "=======> gpsLatitudeRef= " + gpsLatitudeRef);
-            Log.d("TAG", "=======> gpsLongitude= " + gpsLongitude);
-            Log.d("TAG", "=======> gpsLongitudeRef= " + gpsLongitudeRef);
 
             float[] latLong = new float[2];
             if (exif.getLatLong(latLong))

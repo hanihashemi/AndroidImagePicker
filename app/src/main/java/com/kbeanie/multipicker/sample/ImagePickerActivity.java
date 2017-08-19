@@ -1,6 +1,5 @@
 package com.kbeanie.multipicker.sample;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 import com.hanihashemi.imagepicker.api.CacheLocation;
 import com.hanihashemi.imagepicker.api.CameraImagePicker;
 import com.hanihashemi.imagepicker.api.ImagePicker;
-import com.hanihashemi.imagepicker.api.Picker;
 import com.hanihashemi.imagepicker.api.callbacks.ImagePickerCallback;
 import com.hanihashemi.imagepicker.api.entity.ChosenImage;
 import com.hanihashemi.imagepicker.core.PickerImpl;
@@ -61,6 +59,7 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
 
     public void pickImageSingle() {
         picker = new ImagePicker.Builder(this, this)
+                .shouldCrop(true)
                 .build();
         picker.pickImage();
     }
@@ -85,7 +84,7 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        picker.getActivityResult(requestCode, resultCode, data);
+        picker.getActivityResult(this, requestCode, resultCode, data);
     }
 
     @Override
@@ -94,7 +93,9 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
         lvResults.setAdapter(adapter);
 
         for (ChosenImage image : images) {
-            Log.d(TAG, image.toString());
+            Log.d(TAG, "==> original image path: " + image.getOriginalPath());
+            Log.d(TAG, "==> big thumbnail image path: " + image.getThumbnailPath());
+            Log.d(TAG, "==> small thumbnail image path: " + image.getThumbnailSmallPath());
         }
     }
 

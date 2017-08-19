@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.support.v4.app.Fragment;
 
 import com.hanihashemi.imagepicker.api.callbacks.ImagePickerCallback;
-import com.hanihashemi.imagepicker.api.exceptions.PickerException;
 import com.hanihashemi.imagepicker.core.PickerImpl;
 
 /**
@@ -13,6 +12,7 @@ import com.hanihashemi.imagepicker.core.PickerImpl;
 public final class CameraImagePicker extends PickerImpl {
     /**
      * Constructor for triggering capture from an {@link Activity}
+     *
      * @param activity
      */
     public CameraImagePicker(Activity activity) {
@@ -21,6 +21,7 @@ public final class CameraImagePicker extends PickerImpl {
 
     /**
      * Constructor for triggering capture from a {@link Fragment}
+     *
      * @param fragment
      */
     public CameraImagePicker(Fragment fragment) {
@@ -29,6 +30,7 @@ public final class CameraImagePicker extends PickerImpl {
 
     /**
      * Constructor for triggering capture from a {@link android.app.Fragment}
+     *
      * @param appFragment
      */
     public CameraImagePicker(android.app.Fragment appFragment) {
@@ -85,6 +87,14 @@ public final class CameraImagePicker extends PickerImpl {
          */
         public Builder setCacheLocation(int cacheLocation) {
             cameraImagePicker.setCacheLocation(cacheLocation);
+            return this;
+        }
+
+        /**
+         * Crop it after picking the image {@link Boolean#FALSE}
+         */
+        public Builder shouldCrop(boolean crop) {
+            cameraImagePicker.shouldCrop(crop);
             return this;
         }
 

@@ -107,6 +107,14 @@ public final class ImagePicker extends PickerImpl {
             return this;
         }
 
+        /**
+         * Crop it after picking the image {@link Boolean#FALSE}
+         */
+        public Builder shouldCrop(boolean crop) {
+            imagePicker.shouldCrop(crop);
+            return this;
+        }
+
         public ImagePicker build() {
             return imagePicker;
         }
