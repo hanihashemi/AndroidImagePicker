@@ -1,4 +1,4 @@
-package com.hanihashemi.photopicker.api;
+package com.hanihashemi.imagepicker.api;
 
 /**
  * Created by kbibek on 2/18/16.

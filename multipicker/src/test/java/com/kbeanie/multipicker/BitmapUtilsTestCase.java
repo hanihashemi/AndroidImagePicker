@@ -1,6 +1,6 @@
-package com.hanihashemi.photopicker;
+package com.hanihashemi.imagepicker;
 
-import com.hanihashemi.photopicker.utils.BitmapUtils;
+import com.hanihashemi.imagepicker.utils.BitmapUtils;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;

@@ -1,4 +1,4 @@
-package com.hanihashemi.photopicker.api.exceptions;
+package com.hanihashemi.imagepicker.api.exceptions;
 
 import android.content.ActivityNotFoundException;
 

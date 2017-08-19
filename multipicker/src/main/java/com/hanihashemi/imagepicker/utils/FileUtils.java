@@ -1,14 +1,13 @@
-package com.hanihashemi.photopicker.utils;
+package com.hanihashemi.imagepicker.utils;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import com.hanihashemi.photopicker.api.exceptions.PickerException;
+import com.hanihashemi.imagepicker.api.exceptions.PickerException;
 
 import java.io.File;
 import java.io.FileInputStream;

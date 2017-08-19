@@ -1,4 +1,4 @@
-package com.hanihashemi.photopicker.utils;
+package com.hanihashemi.imagepicker.utils;
 
 /**
  * Created by kbibek on 3/18/16.

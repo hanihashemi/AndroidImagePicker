@@ -1,4 +1,4 @@
-package com.hanihashemi.photopicker.utils;
+package com.hanihashemi.imagepicker.utils;
 
 import java.util.Arrays;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package com.hanihashemi.photopicker.core.threads;
+package com.hanihashemi.imagepicker.core.threads;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -19,14 +19,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
-import com.hanihashemi.photopicker.api.CacheLocation;
-import com.hanihashemi.photopicker.api.callbacks.FilePickerCallback;
-import com.hanihashemi.photopicker.api.entity.ChosenFile;
-import com.hanihashemi.photopicker.api.entity.ChosenImage;
-import com.hanihashemi.photopicker.api.exceptions.PickerException;
-import com.hanihashemi.photopicker.utils.BitmapUtils;
-import com.hanihashemi.photopicker.utils.FileUtils;
-import com.hanihashemi.photopicker.utils.MimeUtils;
+import com.hanihashemi.imagepicker.api.CacheLocation;
+import com.hanihashemi.imagepicker.api.callbacks.FilePickerCallback;
+import com.hanihashemi.imagepicker.api.entity.ChosenFile;
+import com.hanihashemi.imagepicker.api.entity.ChosenImage;
+import com.hanihashemi.imagepicker.api.exceptions.PickerException;
+import com.hanihashemi.imagepicker.utils.BitmapUtils;
+import com.hanihashemi.imagepicker.utils.FileUtils;
+import com.hanihashemi.imagepicker.utils.MimeUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -46,9 +46,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
-import static com.hanihashemi.photopicker.utils.StreamHelper.close;
-import static com.hanihashemi.photopicker.utils.StreamHelper.flush;
-import static com.hanihashemi.photopicker.utils.StreamHelper.verifyStream;
+import static com.hanihashemi.imagepicker.utils.StreamHelper.close;
+import static com.hanihashemi.imagepicker.utils.StreamHelper.flush;
+import static com.hanihashemi.imagepicker.utils.StreamHelper.verifyStream;
 
 /**
  * Created by kbibek on 2/20/16.

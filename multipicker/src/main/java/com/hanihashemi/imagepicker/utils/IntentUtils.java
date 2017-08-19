@@ -1,4 +1,4 @@
-package com.hanihashemi.photopicker.utils;
+package com.hanihashemi.imagepicker.utils;
 
 import android.content.Intent;
 import android.net.Uri;

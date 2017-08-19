@@ -1,4 +1,4 @@
-package com.hanihashemi.photopicker.core;
+package com.hanihashemi.imagepicker.core;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -15,13 +15,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
-import com.hanihashemi.photopicker.api.CameraImagePicker;
-import com.hanihashemi.photopicker.api.ImagePicker;
-import com.hanihashemi.photopicker.api.Picker;
-import com.hanihashemi.photopicker.api.callbacks.ImagePickerCallback;
-import com.hanihashemi.photopicker.api.entity.ChosenImage;
-import com.hanihashemi.photopicker.api.exceptions.PickerException;
-import com.hanihashemi.photopicker.core.threads.ImageProcessorThread;
+import com.hanihashemi.imagepicker.api.CameraImagePicker;
+import com.hanihashemi.imagepicker.api.ImagePicker;
+import com.hanihashemi.imagepicker.api.Picker;
+import com.hanihashemi.imagepicker.api.callbacks.ImagePickerCallback;
+import com.hanihashemi.imagepicker.api.entity.ChosenImage;
+import com.hanihashemi.imagepicker.api.exceptions.PickerException;
+import com.hanihashemi.imagepicker.core.threads.ImageProcessorThread;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;

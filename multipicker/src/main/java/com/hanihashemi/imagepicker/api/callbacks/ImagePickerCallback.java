@@ -1,6 +1,6 @@
-package com.hanihashemi.photopicker.api.callbacks;
+package com.hanihashemi.imagepicker.api.callbacks;
 
-import com.hanihashemi.photopicker.api.entity.ChosenImage;
+import com.hanihashemi.imagepicker.api.entity.ChosenImage;
 
 import java.util.List;
 

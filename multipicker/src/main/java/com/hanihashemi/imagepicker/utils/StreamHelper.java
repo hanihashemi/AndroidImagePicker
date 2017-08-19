@@ -1,4 +1,4 @@
-package com.hanihashemi.photopicker.utils;
+package com.hanihashemi.imagepicker.utils;
 
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
-import com.hanihashemi.photopicker.api.exceptions.PickerException;
+import com.hanihashemi.imagepicker.api.exceptions.PickerException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;

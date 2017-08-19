@@ -1,4 +1,4 @@
-package com.hanihashemi.photopicker.api.entity;
+package com.hanihashemi.imagepicker.api.entity;
 
 import android.media.ExifInterface;
 import android.os.Parcel;

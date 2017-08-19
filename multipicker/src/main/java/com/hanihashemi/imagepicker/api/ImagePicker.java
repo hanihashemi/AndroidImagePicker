@@ -1,11 +1,11 @@
-package com.hanihashemi.photopicker.api;
+package com.hanihashemi.imagepicker.api;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 
-import com.hanihashemi.photopicker.api.callbacks.ImagePickerCallback;
-import com.hanihashemi.photopicker.api.exceptions.PickerException;
-import com.hanihashemi.photopicker.core.ImagePickerImpl;
+import com.hanihashemi.imagepicker.api.callbacks.ImagePickerCallback;
+import com.hanihashemi.imagepicker.api.exceptions.PickerException;
+import com.hanihashemi.imagepicker.core.ImagePickerImpl;
 
 /**
  * Choose an image(s) on your device. Gallery, Google Photos, Dropbox etc.

@@ -1,4 +1,4 @@
-package com.hanihashemi.photopicker.core;
+package com.hanihashemi.imagepicker.core;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -9,9 +9,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 
-import com.hanihashemi.photopicker.api.CacheLocation;
-import com.hanihashemi.photopicker.api.exceptions.PickerException;
-import com.hanihashemi.photopicker.utils.FileUtils;
+import com.hanihashemi.imagepicker.api.CacheLocation;
+import com.hanihashemi.imagepicker.api.exceptions.PickerException;
+import com.hanihashemi.imagepicker.utils.FileUtils;
 
 import java.io.File;
 import java.util.UUID;

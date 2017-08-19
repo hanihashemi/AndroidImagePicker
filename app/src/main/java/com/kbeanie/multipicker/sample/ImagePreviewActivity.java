@@ -8,7 +8,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.hanihashemi.photopicker.api.entity.ChosenImage;
+import com.hanihashemi.imagepicker.api.entity.ChosenImage;
 
 import java.io.File;
 
