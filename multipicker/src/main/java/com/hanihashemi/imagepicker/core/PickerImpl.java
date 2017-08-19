@@ -38,12 +38,14 @@ import java.util.List;
  */
 public abstract class PickerImpl extends PickerManager {
     private final static String TAG = PickerImpl.class.getSimpleName();
-    protected ImagePickerCallback callback;
+    private ImagePickerCallback callback;
     private boolean generateThumbnails = true;
     private boolean generateMetadata = true;
     private int maxWidth = -1;
     private int maxHeight = -1;
     private String cameraFilePath;
+    private boolean crop = false;
+
 
     /**
      * @param activity {@link Activity}
@@ -64,6 +66,13 @@ public abstract class PickerImpl extends PickerManager {
      */
     public PickerImpl(android.app.Fragment appFragment) {
         super(appFragment);
+    }
+
+    /**
+     * Crop it after picking the image {@link Boolean#FALSE}
+     */
+    public void shouldCrop(boolean crop) {
+        this.crop = crop;
     }
 
     /**
@@ -127,7 +136,7 @@ public abstract class PickerImpl extends PickerManager {
     }
 
     private void checkWriteExternalStoragePermission() {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
             pickLocalImage();
         else Dexter.withActivity(activity)
                 .withPermissions(
@@ -152,7 +161,7 @@ public abstract class PickerImpl extends PickerManager {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             tempFilePath = getNewFileLocation("jpeg", Environment.DIRECTORY_PICTURES);
             File file = new File(tempFilePath);
-            uri = FileProvider.getUriForFile(getContext(), getFileProviderAuthority(), file);
+            uri = FileProvider.getUriForFile(getActivity(), getFileProviderAuthority(), file);
             Log.d(TAG, "takeVideoWithCamera: Temp Uri: " + uri.getPath());
         } else {
             tempFilePath = buildFilePath("jpeg", Environment.DIRECTORY_PICTURES);
@@ -171,7 +180,7 @@ public abstract class PickerImpl extends PickerManager {
     }
 
     private void checkCameraPermission() {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             try {
                 takePictureWithCamera();
             } catch (PickerException e) {
@@ -207,15 +216,9 @@ public abstract class PickerImpl extends PickerManager {
     }
 
     /**
-     * Call this method from
-     * {@link Activity#onActivityResult(int, int, Intent)}
-     * OR
-     * {@link Fragment#onActivityResult(int, int, Intent)}
-     * OR
-     * {@link android.app.Fragment#onActivityResult(int, int, Intent)}
      */
     @Override
-    public void getActivityResult(int requestCode, int resultCode, Intent data) {
+    public void getActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == Picker.PICK_IMAGE_DEVICE) {
                 handleGalleryData(data);
@@ -266,7 +269,7 @@ public abstract class PickerImpl extends PickerManager {
     }
 
     private void processImages(List<String> uris) {
-        ImageProcessorThread thread = new ImageProcessorThread(getContext(), getImageObjects(uris), cacheLocation);
+        ImageProcessorThread thread = new ImageProcessorThread(getActivity(), getImageObjects(uris), cacheLocation);
         if (maxWidth != -1 && maxHeight != -1) {
             thread.setOutputImageDimensions(maxWidth, maxHeight);
         }
