@@ -51,7 +51,6 @@ public class ChosenFile implements Parcelable {
      * Display name of the file
      */
 
-    private int requestId;
     private String displayName;
     private boolean success;
     private String tempFile = "";
@@ -71,7 +70,6 @@ public class ChosenFile implements Parcelable {
         long tmpCreatedAt = in.readLong();
         this.createdAt = tmpCreatedAt == -1 ? null : new Date(tmpCreatedAt);
         this.type = in.readString();
-        this.requestId = in.readInt();
         this.displayName = in.readString();
         this.success = in.readByte() != 0;
         this.tempFile = in.readString();
@@ -265,14 +263,6 @@ public class ChosenFile implements Parcelable {
                 TimeUnit.MILLISECONDS.toSeconds(duration) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration)));
     }
 
-    public int getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(int requestId) {
-        this.requestId = requestId;
-    }
-
     public String getTempFile() {
         return tempFile;
     }
@@ -296,7 +286,6 @@ public class ChosenFile implements Parcelable {
         dest.writeString(this.extension);
         dest.writeLong(this.createdAt != null ? this.createdAt.getTime() : -1);
         dest.writeString(this.type);
-        dest.writeInt(this.requestId);
         dest.writeString(this.displayName);
         dest.writeByte(this.success ? (byte) 1 : (byte) 0);
         dest.writeString(this.tempFile);

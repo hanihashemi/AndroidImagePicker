@@ -1,19 +1,13 @@
 package com.hanihashemi.photopicker.core;
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.OpenableColumns;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.hanihashemi.photopicker.api.CacheLocation;
 import com.hanihashemi.photopicker.api.exceptions.PickerException;
@@ -22,23 +16,17 @@ import com.hanihashemi.photopicker.utils.FileUtils;
 import java.io.File;
 import java.util.UUID;
 
-import storage.StoragePreferences;
-
 /**
  * Abstract class for all types of Pickers
  */
 public abstract class PickerManager {
     final int pickerType;
     protected Activity activity;
+    protected boolean allowMultiple;
+    int cacheLocation = CacheLocation.EXTERNAL_STORAGE_APP_DIR;
+    Bundle extras;
     private Fragment fragment;
     private android.app.Fragment appFragment;
-    int requestId;
-
-    int cacheLocation = CacheLocation.EXTERNAL_STORAGE_PUBLIC_DIR;
-
-    Bundle extras;
-
-    protected boolean allowMultiple;
 
     @SuppressWarnings("WeakerAccess")
     public PickerManager(Activity activity, int pickerType) {
@@ -67,20 +55,13 @@ public abstract class PickerManager {
         this.cacheLocation = cacheLocation;
     }
 
-    public void setFolderName(String folderName) {
-        StoragePreferences preferences = new StoragePreferences(getContext());
-        preferences.setFolderName(folderName);
-    }
-
     /**
      * Triggers pick image
-     *
      */
     protected abstract void pick() throws PickerException;
 
     /**
      * This method should be called after {@link Activity#onActivityResult(int, int, Intent)} is  called.
-     *
      */
     public abstract void submit(Intent data);
 
@@ -92,9 +73,6 @@ public abstract class PickerManager {
     private String getDirectory(String type) throws PickerException {
         String directory = null;
         switch (cacheLocation) {
-            case CacheLocation.EXTERNAL_STORAGE_PUBLIC_DIR:
-                directory = FileUtils.getExternalFilesDirectory(type, getContext());
-                break;
             case CacheLocation.EXTERNAL_STORAGE_APP_DIR:
                 directory = FileUtils.getExternalFilesDir(type, getContext());
                 break;
@@ -138,10 +116,6 @@ public abstract class PickerManager {
 
     boolean isClipDataApi() {
         return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN);
-    }
-
-    public void setRequestId(int requestId) {
-        this.requestId = requestId;
     }
 
     String getNewFileLocation(String extension, String type) throws PickerException {

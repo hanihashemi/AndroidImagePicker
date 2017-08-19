@@ -9,17 +9,6 @@ package com.hanihashemi.photopicker.api;
  */
 public interface CacheLocation {
     /**
-     * Save files directly under various folders of the external storage,
-     * ex: /sdcard/App Name/App Name Pictures/, /sdcard/App Name/App Name/Videos, /sdcard/App Name/App Name Files etc
-     *
-     * These files won't be deleted when the application is deleted.
-     *
-     * This will be eventually deprecated due to security reasons in Android Nougat.
-     */
-
-    @Deprecated
-    int EXTERNAL_STORAGE_PUBLIC_DIR = 100;
-    /**
      * Save files under your application's files directory on the external storage
      * ex: /sdcard/Android/data/your_package/Pictures, /sdcard/Android/data/your_package/Videos
      * <p/>

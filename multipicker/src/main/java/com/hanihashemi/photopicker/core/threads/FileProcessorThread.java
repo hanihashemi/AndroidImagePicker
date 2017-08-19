@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.location.Location;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
@@ -63,16 +62,10 @@ public class FileProcessorThread extends Thread {
     private final int cacheLocation;
     private FilePickerCallback callback;
 
-    private int requestId;
-
     public FileProcessorThread(Context context, List<? extends ChosenFile> files, int cacheLocation) {
         this.context = context;
         this.files = files;
         this.cacheLocation = cacheLocation;
-    }
-
-    public void setRequestId(int requestId) {
-        this.requestId = requestId;
     }
 
     @Override
@@ -101,7 +94,6 @@ public class FileProcessorThread extends Thread {
     protected void processFiles() {
         for (ChosenFile file : files) {
             try {
-                file.setRequestId(requestId);
                 Log.d(TAG, "processFile: Before: " + file.toString());
                 processFile(file);
                 postProcess(file);
@@ -483,17 +475,15 @@ public class FileProcessorThread extends Thread {
     protected String getTargetDirectory(String type) throws PickerException {
         String directory;
         switch (cacheLocation) {
-            case CacheLocation.EXTERNAL_STORAGE_APP_DIR:
-                directory = FileUtils.getExternalFilesDir(type, context);
-                break;
             case CacheLocation.EXTERNAL_CACHE_DIR:
                 directory = FileUtils.getExternalCacheDir(context);
                 break;
             case CacheLocation.INTERNAL_APP_DIR:
                 directory = FileUtils.getInternalFileDirectory(context);
                 break;
+            case CacheLocation.EXTERNAL_STORAGE_APP_DIR:
             default:
-                directory = FileUtils.getExternalFilesDirectory(type, context);
+                directory = FileUtils.getExternalFilesDir(type, context);
                 break;
         }
 

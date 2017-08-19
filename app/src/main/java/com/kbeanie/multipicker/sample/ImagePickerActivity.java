@@ -60,21 +60,18 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
     }
 
     public void pickImageSingle() {
-        imagePicker = new ImagePicker(this);
-        imagePicker.setFolderName("Random");
-        imagePicker.setRequestId(1234);
-        imagePicker.ensureMaxSize(500, 500);
-        imagePicker.shouldGenerateMetadata(true);
-        imagePicker.shouldGenerateThumbnails(true);
-        imagePicker.setImagePickerCallback(this);
-        imagePicker.setCacheLocation(CacheLocation.EXTERNAL_STORAGE_APP_DIR);
+        imagePicker = new ImagePicker.Builder(this, this)
+                .build();
         imagePicker.pickImage();
     }
 
     public void pickImageMultiple() {
-        imagePicker = new ImagePicker(this);
-        imagePicker.setImagePickerCallback(this);
-        imagePicker.allowMultiple();
+        imagePicker = new ImagePicker.Builder(this, this)
+                .allowMultiple(true)
+                .ensureMaxSize(500, 500)
+                .shouldGenerateMetadata(false)
+                .shouldGenerateThumbnails(true)
+                .build();
         imagePicker.pickImage();
     }
 

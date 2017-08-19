@@ -15,11 +15,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.hanihashemi.photopicker.api.CameraImagePicker;
 import com.hanihashemi.photopicker.api.ImagePicker;
 import com.hanihashemi.photopicker.api.Picker;
@@ -27,6 +22,11 @@ import com.hanihashemi.photopicker.api.callbacks.ImagePickerCallback;
 import com.hanihashemi.photopicker.api.entity.ChosenImage;
 import com.hanihashemi.photopicker.api.exceptions.PickerException;
 import com.hanihashemi.photopicker.core.threads.ImageProcessorThread;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -264,7 +264,6 @@ public abstract class ImagePickerImpl extends PickerManager {
         if (maxWidth != -1 && maxHeight != -1) {
             thread.setOutputImageDimensions(maxWidth, maxHeight);
         }
-        thread.setRequestId(requestId);
         thread.setShouldGenerateThumbnails(generateThumbnails);
         thread.setShouldGenerateMetadata(generateMetadata);
         thread.setImagePickerCallback(callback);
