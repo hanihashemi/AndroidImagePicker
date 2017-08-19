@@ -7,7 +7,7 @@ android {
     buildToolsVersion '25.0.2'
 
     defaultConfig {
-        minSdkVersion 10
+        minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -33,4 +33,5 @@ dependencies {
     compile 'junit:junit:4.12'
     compile 'com.android.support:support-v4:25.1.0'
     compile 'com.karumi:dexter:3.0.0'
+    compile 'com.github.yalantis:ucrop:2.2.1'
 }
