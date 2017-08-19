@@ -36,8 +36,8 @@ import java.util.List;
  * Class to pick images (Stored or capture a new image using the device's camera)
  * This class cannot be used directly. User {@link ImagePicker} or {@link CameraImagePicker}
  */
-public abstract class ImagePickerImpl extends PickerManager {
-    private final static String TAG = ImagePickerImpl.class.getSimpleName();
+public abstract class PickerImpl extends PickerManager {
+    private final static String TAG = PickerImpl.class.getSimpleName();
     protected ImagePickerCallback callback;
     private boolean generateThumbnails = true;
     private boolean generateMetadata = true;
@@ -49,7 +49,7 @@ public abstract class ImagePickerImpl extends PickerManager {
      * @param activity   {@link Activity}
      * @param pickerType {@link Picker#PICK_IMAGE_DEVICE}, {@link Picker#PICK_IMAGE_CAMERA}
      */
-    public ImagePickerImpl(Activity activity, int pickerType) {
+    public PickerImpl(Activity activity, int pickerType) {
         super(activity, pickerType);
     }
 
@@ -57,7 +57,7 @@ public abstract class ImagePickerImpl extends PickerManager {
      * @param fragment   {@link Fragment}
      * @param pickerType {@link Picker#PICK_IMAGE_DEVICE}, {@link Picker#PICK_IMAGE_CAMERA}
      */
-    public ImagePickerImpl(Fragment fragment, int pickerType) {
+    public PickerImpl(Fragment fragment, int pickerType) {
         super(fragment, pickerType);
     }
 
@@ -65,7 +65,7 @@ public abstract class ImagePickerImpl extends PickerManager {
      * @param appFragment {@link android.app.Fragment}
      * @param pickerType  {@link Picker#PICK_IMAGE_DEVICE}, {@link Picker#PICK_IMAGE_CAMERA}
      */
-    public ImagePickerImpl(android.app.Fragment appFragment, int pickerType) {
+    public PickerImpl(android.app.Fragment appFragment, int pickerType) {
         super(appFragment, pickerType);
     }
 

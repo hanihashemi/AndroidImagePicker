@@ -71,16 +71,14 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
                 .ensureMaxSize(500, 500)
                 .shouldGenerateMetadata(false)
                 .shouldGenerateThumbnails(true)
+                .setCacheLocation(CacheLocation.EXTERNAL_STORAGE_APP_DIR)
                 .build();
         imagePicker.pickImage();
     }
 
     public void takePicture() {
-        cameraPicker = new CameraImagePicker(this);
-        cameraPicker.setCacheLocation(CacheLocation.EXTERNAL_CACHE_DIR);
-        cameraPicker.setImagePickerCallback(this);
-        cameraPicker.shouldGenerateMetadata(true);
-        cameraPicker.shouldGenerateThumbnails(true);
+        cameraPicker = new CameraImagePicker.Builder(this, this)
+                .build();
         cameraPicker.pickImage();
     }
 

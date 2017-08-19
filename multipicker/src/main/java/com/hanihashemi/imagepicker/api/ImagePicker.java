@@ -5,12 +5,12 @@ import android.support.v4.app.Fragment;
 
 import com.hanihashemi.imagepicker.api.callbacks.ImagePickerCallback;
 import com.hanihashemi.imagepicker.api.exceptions.PickerException;
-import com.hanihashemi.imagepicker.core.ImagePickerImpl;
+import com.hanihashemi.imagepicker.core.PickerImpl;
 
 /**
  * Choose an image(s) on your device. Gallery, Google Photos, Dropbox etc.
  */
-public final class ImagePicker extends ImagePickerImpl {
+public final class ImagePicker extends PickerImpl {
     /**
      * Constructor for choosing an image from an {@link Activity}
      *
