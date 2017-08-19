@@ -48,7 +48,14 @@ public abstract class PickerImpl extends PickerManager {
     private int maxHeight = -1;
     private String cameraFilePath;
     private boolean crop = false;
+    private UCrop.Options options;
 
+    /**
+     * UCrop options
+     */
+    public void setUCropOptions(UCrop.Options options) {
+        this.options = options;
+    }
     /**
      * @param activity {@link Activity}
      */
@@ -289,6 +296,7 @@ public abstract class PickerImpl extends PickerManager {
         thread.setShouldGenerateThumbnails(generateThumbnails);
         thread.setShouldGenerateMetadata(generateMetadata);
         thread.setImagePickerCallback(callback);
+        thread.setUCropOptions(options);
         thread.setShouldCrop(shouldCrop);
         thread.start();
     }

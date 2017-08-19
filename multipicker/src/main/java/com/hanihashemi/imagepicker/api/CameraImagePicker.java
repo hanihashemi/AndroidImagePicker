@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 
 import com.hanihashemi.imagepicker.api.callbacks.ImagePickerCallback;
 import com.hanihashemi.imagepicker.core.PickerImpl;
+import com.yalantis.ucrop.UCrop;
 
 /**
  * Capture an image using the device's camera.
@@ -95,6 +96,14 @@ public final class CameraImagePicker extends PickerImpl {
          */
         public Builder shouldCrop(boolean crop) {
             cameraImagePicker.shouldCrop(crop);
+            return this;
+        }
+
+        /**
+         * UCrop options
+         */
+        public Builder setUCropOptions(UCrop.Options options) {
+            cameraImagePicker.setUCropOptions(options);
             return this;
         }
 

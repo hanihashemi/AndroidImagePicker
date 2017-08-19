@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 
 import com.hanihashemi.imagepicker.api.callbacks.ImagePickerCallback;
 import com.hanihashemi.imagepicker.core.PickerImpl;
+import com.yalantis.ucrop.UCrop;
 
 /**
  * Choose an image(s) on your device. Gallery, Google Photos, Dropbox etc.
@@ -104,6 +105,14 @@ public final class ImagePicker extends PickerImpl {
          */
         public Builder allowMultiple(boolean multiple) {
             imagePicker.allowMultiple(multiple);
+            return this;
+        }
+
+        /**
+         * UCrop options
+         */
+        public Builder setUCropOptions(UCrop.Options options) {
+            imagePicker.setUCropOptions(options);
             return this;
         }
 

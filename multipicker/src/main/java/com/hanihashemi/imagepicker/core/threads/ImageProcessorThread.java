@@ -2,8 +2,11 @@ package com.hanihashemi.imagepicker.core.threads;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.net.Uri;
+import android.util.TypedValue;
 
+import com.hanihashemi.imagepicker.R;
 import com.hanihashemi.imagepicker.api.callbacks.ImagePickerCallback;
 import com.hanihashemi.imagepicker.api.entity.ChosenImage;
 import com.hanihashemi.imagepicker.api.exceptions.PickerException;
@@ -25,9 +28,17 @@ public final class ImageProcessorThread extends FileProcessorThread {
     private int maxImageWidth = -1;
     private int maxImageHeight = -1;
     private ImagePickerCallback callback;
+    private UCrop.Options options;
 
     public ImageProcessorThread(Context context, List<ChosenImage> paths, int cacheLocation) {
         super(context, paths, cacheLocation);
+    }
+
+    /**
+     * UCrop options
+     */
+    public void setUCropOptions(UCrop.Options options) {
+        this.options = options;
     }
 
     public void setShouldCrop(boolean shouldCrop) {
@@ -42,12 +53,25 @@ public final class ImageProcessorThread extends FileProcessorThread {
         this.callback = callback;
     }
 
+    private int fetchColor(int colorId) {
+        TypedValue typedValue = new TypedValue();
+        TypedArray a = context.obtainStyledAttributes(typedValue.data, new int[]{colorId});
+        int color = a.getColor(0, 0);
+        a.recycle();
+        return color;
+    }
+
     @Override
     public void run() {
         super.run();
         if (shouldCrop) {
+            UCrop.Options alterOptions = new UCrop.Options();
+            alterOptions.setActiveWidgetColor(fetchColor(R.attr.colorAccent));
+            alterOptions.setToolbarColor(fetchColor(R.attr.colorPrimary));
+
             UCrop.of(Uri.fromFile(new File(files.get(0).getOriginalPath())), Uri.fromFile(new File(files.get(0).getOriginalPath())))
                     .withAspectRatio(1, 1)
+                    .withOptions(this.options == null ? alterOptions : this.options)
                     .start((Activity) context);
         } else {
             postProcessImages();

@@ -1,6 +1,7 @@
 package com.kbeanie.multipicker.sample;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import com.hanihashemi.imagepicker.api.ImagePicker;
 import com.hanihashemi.imagepicker.api.callbacks.ImagePickerCallback;
 import com.hanihashemi.imagepicker.api.entity.ChosenImage;
 import com.hanihashemi.imagepicker.core.PickerImpl;
+import com.yalantis.ucrop.UCrop;
 
 import java.util.List;
 
@@ -72,8 +74,13 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
     }
 
     private void takePictureAndCrop() {
+        UCrop.Options options = new UCrop.Options();
+        options.setToolbarColor(Color.GREEN);
+        options.setActiveWidgetColor(Color.RED);
+
         picker = new CameraImagePicker.Builder(this, this)
                 .shouldCrop(true)
+                .setUCropOptions(options)
                 .build();
         picker.pickImage();
     }
