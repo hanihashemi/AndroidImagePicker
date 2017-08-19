@@ -6,6 +6,7 @@ import android.util.Log;
 import com.hanihashemi.imagepicker.api.callbacks.ImagePickerCallback;
 import com.hanihashemi.imagepicker.api.entity.ChosenImage;
 import com.hanihashemi.imagepicker.api.exceptions.PickerException;
+import com.hanihashemi.imagepicker.utils.Logger;
 
 import java.util.List;
 
@@ -73,19 +74,19 @@ public final class ImageProcessorThread extends FileProcessorThread {
         if (maxImageWidth != -1 && maxImageHeight != -1) {
             image = ensureMaxWidthAndHeight(maxImageWidth, maxImageHeight, image);
         }
-        Log.d(TAG, "postProcessImage: " + image.getMimeType());
+        Logger.d(TAG, "postProcessImage: " + image.getMimeType());
         if (shouldGenerateMetadata) {
             try {
                 image = generateMetadata(image);
             } catch (Exception e) {
-                Log.d(TAG, "postProcessImage: Error generating metadata");
+                Logger.d(TAG, "postProcessImage: Error generating metadata");
                 e.printStackTrace();
             }
         }
         if (shouldGenerateThumbnails) {
             image = generateThumbnails(image);
         }
-        Log.d(TAG, "postProcessImage: " + image);
+        Logger.d(TAG, "postProcessImage: " + image);
         return image;
     }
 

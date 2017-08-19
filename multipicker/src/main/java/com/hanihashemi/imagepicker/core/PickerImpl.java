@@ -22,6 +22,7 @@ import com.hanihashemi.imagepicker.api.callbacks.ImagePickerCallback;
 import com.hanihashemi.imagepicker.api.entity.ChosenImage;
 import com.hanihashemi.imagepicker.api.exceptions.PickerException;
 import com.hanihashemi.imagepicker.core.threads.ImageProcessorThread;
+import com.hanihashemi.imagepicker.utils.Logger;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -162,7 +163,7 @@ public abstract class PickerImpl extends PickerManager {
             tempFilePath = getNewFileLocation("jpeg", Environment.DIRECTORY_PICTURES);
             File file = new File(tempFilePath);
             uri = FileProvider.getUriForFile(getActivity(), getFileProviderAuthority(), file);
-            Log.d(TAG, "takeVideoWithCamera: Temp Uri: " + uri.getPath());
+            Logger.d(TAG, "takeVideoWithCamera: Temp Uri: " + uri.getPath());
         } else {
             tempFilePath = buildFilePath("jpeg", Environment.DIRECTORY_PICTURES);
             uri = Uri.fromFile(new File(tempFilePath));
@@ -244,15 +245,15 @@ public abstract class PickerImpl extends PickerManager {
         if (intent != null) {
             if (intent.getDataString() != null && isClipDataApi() && intent.getClipData() == null) {
                 String uri = intent.getDataString();
-                Log.d(TAG, "handleGalleryData: " + uri);
+                Logger.d(TAG, "handleGalleryData: " + uri);
                 uris.add(uri);
             } else if (isClipDataApi()) {
                 if (intent.getClipData() != null) {
                     ClipData clipData = intent.getClipData();
-                    Log.d(TAG, "handleGalleryData: Multiple images with ClipData");
+                    Logger.d(TAG, "handleGalleryData: Multiple images with ClipData");
                     for (int i = 0; i < clipData.getItemCount(); i++) {
                         ClipData.Item item = clipData.getItemAt(i);
-                        Log.d(TAG, "Item [" + i + "]: " + item.getUri().toString());
+                        Logger.d(TAG, "Item [" + i + "]: " + item.getUri().toString());
                         uris.add(item.getUri().toString());
                     }
                 }
