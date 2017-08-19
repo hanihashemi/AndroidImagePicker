@@ -46,27 +46,24 @@ public abstract class PickerImpl extends PickerManager {
     private String cameraFilePath;
 
     /**
-     * @param activity   {@link Activity}
-     * @param pickerType {@link Picker#PICK_IMAGE_DEVICE}, {@link Picker#PICK_IMAGE_CAMERA}
+     * @param activity {@link Activity}
      */
-    public PickerImpl(Activity activity, int pickerType) {
-        super(activity, pickerType);
+    public PickerImpl(Activity activity) {
+        super(activity);
     }
 
     /**
-     * @param fragment   {@link Fragment}
-     * @param pickerType {@link Picker#PICK_IMAGE_DEVICE}, {@link Picker#PICK_IMAGE_CAMERA}
+     * @param fragment {@link Fragment}
      */
-    public PickerImpl(Fragment fragment, int pickerType) {
-        super(fragment, pickerType);
+    public PickerImpl(Fragment fragment) {
+        super(fragment);
     }
 
     /**
      * @param appFragment {@link android.app.Fragment}
-     * @param pickerType  {@link Picker#PICK_IMAGE_DEVICE}, {@link Picker#PICK_IMAGE_CAMERA}
      */
-    public PickerImpl(android.app.Fragment appFragment, int pickerType) {
-        super(appFragment, pickerType);
+    public PickerImpl(android.app.Fragment appFragment) {
+        super(appFragment);
     }
 
     /**
@@ -99,14 +96,21 @@ public abstract class PickerImpl extends PickerManager {
     }
 
     @Override
-    protected void pick() throws PickerException {
-        if (callback == null) {
-            throw new PickerException("ImagePickerCallback is null!!! Please set one.");
-        }
-        if (pickerType == Picker.PICK_IMAGE_DEVICE) {
-            checkWriteExternalStoragePermission();
-        } else if (pickerType == Picker.PICK_IMAGE_CAMERA) {
-            checkCameraPermission();
+    public void pickImage() {
+        try {
+            if (callback == null) {
+                throw new PickerException("ImagePickerCallback is null!!! Please set one.");
+            }
+            if (this instanceof ImagePicker) {
+                checkWriteExternalStoragePermission();
+            } else if (this instanceof CameraImagePicker) {
+                checkCameraPermission();
+            }
+        } catch (PickerException e) {
+            e.printStackTrace();
+            if (callback != null) {
+                callback.onError(e.getMessage());
+            }
         }
     }
 
@@ -211,11 +215,13 @@ public abstract class PickerImpl extends PickerManager {
      * {@link android.app.Fragment#onActivityResult(int, int, Intent)}
      */
     @Override
-    public void submit(Intent data) {
-        if (pickerType == Picker.PICK_IMAGE_CAMERA) {
-            handleCameraData(cameraFilePath);
-        } else if (pickerType == Picker.PICK_IMAGE_DEVICE) {
-            handleGalleryData(data);
+    public void getActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == Picker.PICK_IMAGE_DEVICE) {
+                handleGalleryData(data);
+            } else if (requestCode == Picker.PICK_IMAGE_CAMERA) {
+                handleCameraData(cameraFilePath);
+            }
         }
     }
 

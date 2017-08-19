@@ -16,7 +16,7 @@ public final class CameraImagePicker extends PickerImpl {
      * @param activity
      */
     public CameraImagePicker(Activity activity) {
-        super(activity, Picker.PICK_IMAGE_CAMERA);
+        super(activity);
     }
 
     /**
@@ -24,7 +24,7 @@ public final class CameraImagePicker extends PickerImpl {
      * @param fragment
      */
     public CameraImagePicker(Fragment fragment) {
-        super(fragment, Picker.PICK_IMAGE_CAMERA);
+        super(fragment);
     }
 
     /**
@@ -32,22 +32,7 @@ public final class CameraImagePicker extends PickerImpl {
      * @param appFragment
      */
     public CameraImagePicker(android.app.Fragment appFragment) {
-        super(appFragment, Picker.PICK_IMAGE_CAMERA);
-    }
-
-    /**
-     * Triggers image capture using the device's camera
-     * @return
-     */
-    public void pickImage() {
-        try {
-            pick();
-        } catch (PickerException e) {
-            e.printStackTrace();
-            if (callback != null) {
-                callback.onError(e.getMessage());
-            }
-        }
+        super(appFragment);
     }
 
     public static class Builder {

@@ -16,6 +16,7 @@ import com.hanihashemi.imagepicker.api.ImagePicker;
 import com.hanihashemi.imagepicker.api.Picker;
 import com.hanihashemi.imagepicker.api.callbacks.ImagePickerCallback;
 import com.hanihashemi.imagepicker.api.entity.ChosenImage;
+import com.hanihashemi.imagepicker.core.PickerImpl;
 
 import java.util.List;
 
@@ -26,8 +27,7 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
     public static final String TAG = "ImagePickerActivity";
     private ListView lvResults;
 
-    private ImagePicker imagePicker;
-    private CameraImagePicker cameraPicker;
+    private PickerImpl picker;
 
     @SuppressWarnings("ConstantConditions")
     @Override
@@ -60,38 +60,32 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
     }
 
     public void pickImageSingle() {
-        imagePicker = new ImagePicker.Builder(this, this)
+        picker = new ImagePicker.Builder(this, this)
                 .build();
-        imagePicker.pickImage();
+        picker.pickImage();
     }
 
     public void pickImageMultiple() {
-        imagePicker = new ImagePicker.Builder(this, this)
+        picker = new ImagePicker.Builder(this, this)
                 .allowMultiple(true)
                 .ensureMaxSize(500, 500)
                 .shouldGenerateMetadata(false)
                 .shouldGenerateThumbnails(true)
                 .setCacheLocation(CacheLocation.EXTERNAL_STORAGE_APP_DIR)
                 .build();
-        imagePicker.pickImage();
+        picker.pickImage();
     }
 
     public void takePicture() {
-        cameraPicker = new CameraImagePicker.Builder(this, this)
+        picker = new CameraImagePicker.Builder(this, this)
                 .build();
-        cameraPicker.pickImage();
+        picker.pickImage();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == Picker.PICK_IMAGE_DEVICE) {
-                imagePicker.submit(data);
-            } else if (requestCode == Picker.PICK_IMAGE_CAMERA) {
-                cameraPicker.submit(data);
-            }
-        }
+        picker.getActivityResult(requestCode, resultCode, data);
     }
 
     @Override

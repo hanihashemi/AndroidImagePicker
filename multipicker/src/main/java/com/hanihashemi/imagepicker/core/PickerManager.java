@@ -20,7 +20,6 @@ import java.util.UUID;
  * Abstract class for all types of Pickers
  */
 public abstract class PickerManager {
-    final int pickerType;
     protected Activity activity;
     protected boolean allowMultiple;
     int cacheLocation = CacheLocation.EXTERNAL_STORAGE_APP_DIR;
@@ -29,21 +28,18 @@ public abstract class PickerManager {
     private android.app.Fragment appFragment;
 
     @SuppressWarnings("WeakerAccess")
-    public PickerManager(Activity activity, int pickerType) {
+    public PickerManager(Activity activity) {
         this.activity = activity;
-        this.pickerType = pickerType;
     }
 
     @SuppressWarnings("WeakerAccess")
-    public PickerManager(Fragment fragment, int pickerType) {
+    public PickerManager(Fragment fragment) {
         this.fragment = fragment;
-        this.pickerType = pickerType;
     }
 
     @SuppressWarnings("WeakerAccess")
-    public PickerManager(android.app.Fragment appFragment, int pickerType) {
+    public PickerManager(android.app.Fragment appFragment) {
         this.appFragment = appFragment;
-        this.pickerType = pickerType;
     }
 
     /**
@@ -58,12 +54,12 @@ public abstract class PickerManager {
     /**
      * Triggers pick image
      */
-    protected abstract void pick() throws PickerException;
+    public abstract void pickImage();
 
     /**
      * This method should be called after {@link Activity#onActivityResult(int, int, Intent)} is  called.
      */
-    public abstract void submit(Intent data);
+    public abstract void getActivityResult(int requestCode, int resultCode, Intent data);
 
     String buildFilePath(String extension, String type) throws PickerException {
         String directoryPath = getDirectory(type);

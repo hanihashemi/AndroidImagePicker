@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.support.v4.app.Fragment;
 
 import com.hanihashemi.imagepicker.api.callbacks.ImagePickerCallback;
-import com.hanihashemi.imagepicker.api.exceptions.PickerException;
 import com.hanihashemi.imagepicker.core.PickerImpl;
 
 /**
@@ -17,7 +16,7 @@ public final class ImagePicker extends PickerImpl {
      * @param activity
      */
     public ImagePicker(Activity activity) {
-        super(activity, Picker.PICK_IMAGE_DEVICE);
+        super(activity);
     }
 
     /**
@@ -26,7 +25,7 @@ public final class ImagePicker extends PickerImpl {
      * @param fragment
      */
     public ImagePicker(Fragment fragment) {
-        super(fragment, Picker.PICK_IMAGE_DEVICE);
+        super(fragment);
     }
 
     /**
@@ -35,7 +34,7 @@ public final class ImagePicker extends PickerImpl {
      * @param appFragment
      */
     public ImagePicker(android.app.Fragment appFragment) {
-        super(appFragment, Picker.PICK_IMAGE_DEVICE);
+        super(appFragment);
     }
 
     /**
@@ -44,20 +43,6 @@ public final class ImagePicker extends PickerImpl {
      */
     public void allowMultiple(boolean multiple) {
         this.allowMultiple = multiple;
-    }
-
-    /**
-     * Triggers Image selection
-     */
-    public void pickImage() {
-        try {
-            super.pick();
-        } catch (PickerException e) {
-            e.printStackTrace();
-            if (callback != null) {
-                callback.onError(e.getMessage());
-            }
-        }
     }
 
     public static class Builder {
