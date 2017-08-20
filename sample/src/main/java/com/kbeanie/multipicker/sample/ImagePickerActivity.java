@@ -57,6 +57,7 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
                 break;
             case R.id.btCameraImage:
                 takePicture();
+                break;
             case R.id.btCameraImageCrop:
                 takePictureAndCrop();
                 break;
@@ -75,7 +76,7 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
 
     private void takePictureAndCrop() {
         UCrop.Options options = new UCrop.Options();
-        options.setToolbarColor(Color.GREEN);
+        options.setToolbarColor(Color.rgb(244, 185, 66));
         options.setActiveWidgetColor(Color.RED);
 
         picker = new CameraImagePicker.Builder(this, this)
