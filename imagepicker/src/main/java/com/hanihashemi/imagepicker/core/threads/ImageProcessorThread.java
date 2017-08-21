@@ -68,6 +68,7 @@ public final class ImageProcessorThread extends FileProcessorThread {
             UCrop.Options alterOptions = new UCrop.Options();
             alterOptions.setActiveWidgetColor(fetchColor(R.attr.colorAccent));
             alterOptions.setToolbarColor(fetchColor(R.attr.colorPrimary));
+            alterOptions.setStatusBarColor(fetchColor(R.attr.colorPrimaryDark));
 
             UCrop.of(Uri.fromFile(new File(files.get(0).getOriginalPath())), Uri.fromFile(new File(files.get(0).getOriginalPath())))
                     .withAspectRatio(1, 1)
