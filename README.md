@@ -1,77 +1,81 @@
-### Android Multipicker Library (Images, Videos, Files, Audios, Contacts)
----
+### Android Image Picker
+[![](https://jitpack.io/v/hanihashemi/AndroidImagePicker.svg)](https://jitpack.io/#hanihashemi/AndroidImagePicker)
 
-**Makes it easy and simple to integrate "Attach that file" feature into your android apps.**
 
->Don't worry about various devices/OS variations.
-
->Don't worry about out-of-memory errors.
-
->Don't worry about creating thumbnails to show a preview.
-
->Picking up any file for your app, and it's details.
-
->Picking up audio files.
-
-##### Code less for capturing  images/videos/files
+- Don't worry about various devices/OS variations.
+- Don't worry about out-of-memory errors.
+- Don't worry about creating thumbnails to show a preview.
 - Choose images from device or take a photo
-- Choose videos from device or record one
-- Choose files available on your device
-- Choose audio files available on your device
-- Choose a contact from the phonebook
-- Works with almost all content providers
 - Get all metadata about the media that you would probably need
-- Similar code base to implement irrespective of Android version of device.
+- And YES you can crop your images :)
+## Usage
+``` java
+PickerImpl picker;
 
+void pickMultipleImageFromGallery() {
+   picker = new ImagePicker.Builder(this, this)
+      .allowMultiple(true)
+      .ensureMaxSize(500, 500)
+      .shouldGenerateMetadata(false)
+      .shouldGenerateThumbnails(true)
+      .setCacheLocation(CacheLocation.EXTERNAL_STORAGE_APP_DIR)
+      .build();
+      picker.pickImage();
+}
 
-##### Gradle
-```groovy
-compile 'com.kbeanie:multipicker:1.1.2@aar'
+void pickSingleImageFromGallery() {
+   picker = new ImagePicker.Builder(this, this)
+      .shouldCrop(true) // <============= For croping
+      .build();
+   picker.pickImage();
+}
+
+void takePictureByCamera() {
+   picker = new CameraImagePicker.Builder(this, this)
+      .build();
+   picker.pickImage();
+}
+
+@Override
+void onActivityResult(int requestCode, int resultCode, Intent data) {
+   super.onActivityResult(requestCode, resultCode, data);
+   picker.getActivityResult(this, requestCode, resultCode, data);
+}
+
+@Override
+void onImagesChosen(List<ChosenImage> images) {
+   MediaResultsAdapter adapter = new MediaResultsAdapter(images, this);
+   lvResults.setAdapter(adapter);
+   for (ChosenImage image : images) {
+      Log.d(TAG, "==> original image path: " + image.getOriginalPath());
+      Log.d(TAG, "==> big thumbnail image path: " + image.getThumbnailPath());
+      Log.d(TAG, "==> small thumbnail image path: " + image.getThumbnailSmallPath());
+   }
+}
+
+@Override
+void onError(String message) {
+   Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+}
 ```
 
-##### Maven
-```xml
-<dependency>
-    <groupId>com.kbeanie</groupId>
-    <artifactId>multipicker</artifactId>
-    <version>1.1.2</version>
-</dependency>
+## Installation
+<b>Step 1:</b> Add the JitPack repository to your build file
+``` groovy
+allprojects {
+   repositories {
+      ...
+      maven { url 'https://jitpack.io' }
+   }
+}
 ```
-
-See [Wiki Pages](https://github.com/coomar2841/android-multipicker-library/wiki) for code snippets.
-
-_Try out the sample app if you want to test it out first._
-
-<a href="https://play.google.com/store/apps/details?id=com.kbeanie.multipicker.sample&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1">
-    <img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" width="150px"/>
-</a>
-
-##### Recent changes
-
-###### Version 1.1.2
-- Pull Request: #43
-- #44: Crash when application label is not specified
-- #37: Set Custom folder name
-- #46: FileUriExposedException
-- #48: Provider Conflict
-- #50: Wrong file name for PickerUtils.java
-- #56: If use ensureMaxSize with CameraImagePicker, unable to delete original photo
-- #55: resultCode always return RESULT_CANCELED when configure CameraImagePicker to use internal app directory
-
-###### Version 1.1.1
-- Fixed problem where for some files, mimetypes were not being properly set
-- Removed `Intent.createChooser` implementation Issue #33
-- Added option for `CacheLocation.INTERNAL_APP_DIR` for saving files into application's internal storage.
-
-###### Version 1.1.0
-- Issue #14 (Support for adding mimetype parameter for FilePicker)
-- Added JavaDocs
-- Removed Bing Image Search
-
-###### Version 1.0.10
-- Issue #17: For some camera applications, video recording was not possible.
-- Issue #20: Exif Issue
-- Media Picker changes and some fixes
+	
+<b>Step 2:</b> Add the dependency
+``` groovy
+dependencies {
+   compile 'com.github.hanihashemi:AndroidImagePicker:1.0'
+}
+```
 
 ##### License
 ---
