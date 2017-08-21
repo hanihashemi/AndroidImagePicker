@@ -1,6 +1,7 @@
 ### Android Image Picker
 [![](https://jitpack.io/v/hanihashemi/AndroidImagePicker.svg)](https://jitpack.io/#hanihashemi/AndroidImagePicker)
 
+![Android Image Picker](/screenshot.gif)
 
 - Don't worry about various devices/OS variations.
 - Don't worry about out-of-memory errors.
