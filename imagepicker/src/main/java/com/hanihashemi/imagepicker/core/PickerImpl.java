@@ -147,7 +147,7 @@ public abstract class PickerImpl extends PickerManager {
     private void checkWriteExternalStoragePermission() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
             pickLocalImage();
-        else Dexter.withActivity(activity)
+        else Dexter.withActivity(getActivity())
                 .withPermissions(
                         Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ).withListener(new MultiplePermissionsListener() {
@@ -198,7 +198,7 @@ public abstract class PickerImpl extends PickerManager {
                     callback.onError(e.getMessage());
                 }
             }
-        } else Dexter.withActivity(activity)
+        } else Dexter.withActivity(getActivity())
                 .withPermissions(
                         Manifest.permission.CAMERA,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE

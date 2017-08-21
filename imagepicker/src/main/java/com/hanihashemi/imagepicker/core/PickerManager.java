@@ -19,7 +19,7 @@ import java.util.UUID;
  * Abstract class for all types of Pickers
  */
 public abstract class PickerManager {
-    protected Activity activity;
+    private Activity activity;
     protected boolean allowMultiple;
     int cacheLocation = CacheLocation.EXTERNAL_STORAGE_APP_DIR;
     Bundle extras;
