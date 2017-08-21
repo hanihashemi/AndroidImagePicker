@@ -72,9 +72,12 @@ allprojects {
 ```
 	
 <b>Step 2:</b> Add the dependency
+
+[![](https://jitpack.io/v/hanihashemi/AndroidImagePicker.svg)](https://jitpack.io/#hanihashemi/AndroidImagePicker)
+
 ``` groovy
 dependencies {
-   compile 'com.github.hanihashemi:AndroidImagePicker:1.0'
+   compile 'com.github.hanihashemi:AndroidImagePicker:<Latest-Version>'
 }
 ```
 
